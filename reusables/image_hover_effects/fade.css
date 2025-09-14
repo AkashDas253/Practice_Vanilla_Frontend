@@ -1,0 +1,7 @@
+.img-fade {
+    opacity: 1;
+    transition: opacity 0.4s;
+}
+.img-fade:hover {
+    opacity: 0.6;
+}

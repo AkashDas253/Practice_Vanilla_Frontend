@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Hover Effects Demo</title>
+    <link rel="stylesheet" href="zoom.css">
+    <link rel="stylesheet" href="grayscale.css">
+    <link rel="stylesheet" href="shadow.css">
+    <link rel="stylesheet" href="border.css">
+    <link rel="stylesheet" href="rotate.css">
+    <link rel="stylesheet" href="blur.css">
+    <link rel="stylesheet" href="scaleupdown.css">
+    <link rel="stylesheet" href="fade.css">
+    <link rel="stylesheet" href="overlay.css">
+    <link rel="stylesheet" href="radiusmorph.css">
+    <link rel="stylesheet" href="flip3d.css">
+    <link rel="stylesheet" href="colortint.css">
+    <link rel="stylesheet" href="shine.css">
+    <link rel="stylesheet" href="popout.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 32px 24px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 24px;
+        }
+        .demo-imgs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 32px;
+            align-items: center;
+            justify-items: center;
+        }
+        .demo-imgs img {
+            width: 160px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .label {
+            text-align: center;
+            font-size: 1em;
+            color: #1976d2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Hover Effects Demo</h1>
+        <div class="demo-imgs">
+            <div>
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="img-zoom" alt="Zoom Effect">
+                <div class="label">Zoom-in</div>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="img-grayscale" alt="Grayscale Effect">
+                <div class="label">Grayscale to Color</div>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="img-shadow" alt="Shadow Effect">
+                <div class="label">Shadow Glow</div>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="img-border" alt="Border Effect">
+                <div class="label">Border Animation</div>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="img-rotate" alt="Rotate Effect">
+                <div class="label">Rotate</div>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="img-blur" alt="Blur Effect">
+                <div class="label">Blur</div>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="img-scaleupdown" alt="Scale Up Down Effect">
+                <div class="label">Scale Up Down</div>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="img-fade" alt="Fade Effect">
+                <div class="label">Fade</div>
+            </div>
+            <div>
+                <div class="img-overlay">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Overlay Effect">
+                </div>
+                <div class="label">Opacity Overlay</div>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="img-radiusmorph" alt="Radius Morph Effect">
+                <div class="label">Radius Morph</div>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="img-flip3d" alt="Flip 3D Effect">
+                <div class="label">Flip 3D</div>
+            </div>
+            <div>
+                <div class="img-colortint">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Color Tint Effect">
+                </div>
+                <div class="label">Color Tint</div>
+            </div>
+            <div>
+                <div class="img-shine">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Shine Effect">
+                </div>
+                <div class="label">Shine</div>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" class="img-popout" alt="Pop Out Effect">
+                <div class="label">Pop Out</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

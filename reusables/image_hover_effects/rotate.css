@@ -1,0 +1,6 @@
+.img-rotate {
+    transition: transform 0.4s;
+}
+.img-rotate:hover {
+    transform: rotate(8deg) scale(1.08);
+}

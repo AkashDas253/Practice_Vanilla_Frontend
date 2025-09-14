@@ -1,0 +1,24 @@
+.img-shine {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+.img-shine img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+.img-shine::before {
+    content: "";
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: linear-gradient(120deg, rgba(255,255,255,0.0) 40%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.0) 60%);
+    transform: translateX(-100%) rotate(25deg);
+    transition: transform 0.7s;
+    pointer-events: none;
+}
+.img-shine:hover::before {
+    transform: translateX(100%) rotate(25deg);
+}

@@ -1,0 +1,7 @@
+.img-popout {
+    transition: transform 0.4s, box-shadow 0.4s;
+}
+.img-popout:hover {
+    transform: scale(1.12);
+    box-shadow: 0 12px 32px 0 rgba(25, 118, 210, 0.25);
+}

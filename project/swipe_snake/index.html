@@ -8,7 +8,11 @@
 </head>
 <body>
     <div class="game-container">
-        <h1>Snake Game</h1>
+        <div class="score-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span id="score" style="font-size: 20px; font-weight: bold;">Score: 0</span>
+            <h1 style="margin: 0; flex: 1; text-align: center;">Snake Game</h1>
+            <span id="highScore" style="font-size: 20px; font-weight: bold;">Highest: 0</span>
+        </div>
         <div class="settings-panel" style="margin-bottom: 10px;">
             <label for="wallToggle">Wall Type:</label>
             <button id="wallToggle">Classic</button>
@@ -20,20 +24,25 @@
                 <option value="4">4</option>
                 <option value="5">5 (Fast)</option>
             </select>
-            <label for="baitTimeout" style="margin-left: 15px;">Bait Timeout (sec):</label>
-            <input type="number" id="baitTimeout" min="2" max="20" value="8" style="width: 50px;">
+            <label for="baitTimeout" style="margin-left: 15px;">Bait Timeout:</label>
+            <select id="baitTimeout">
+                <option value="none">None</option>
+                <option value="4">4 sec</option>
+                <option value="8" selected>8 sec</option>
+                <option value="12">12 sec</option>
+                <option value="16">16 sec</option>
+            </select>
+            <button id="saveSettingsBtn" style="margin-left: 20px; opacity: 0.5; pointer-events: none;">Save</button>
         </div>
         <canvas id="gameCanvas" width="400" height="400"></canvas>
-        <div class="controls" style="margin-top: 10px;">
-            <span id="score">Score: 0</span>
-            <span id="highScore">Highest: 0</span>
-            <button id="restartBtn" style="display: none;">Restart</button>
-            <button id="pauseBtn">Pause</button>
+        <div class="controls" style="margin-top: 20px; display: flex; justify-content: center; gap: 20px;">
+            <button id="startRestartBtn">Start</button>
+            <button id="pauseResumeBtn" disabled>Pause</button>
         </div>
     </div>
     <!-- Sound effects -->
     <audio id="eatSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b6c2b2e.mp3" preload="auto"></audio>
     <audio id="gameOverSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b6c2b2e.mp3" preload="auto"></audio>
-    <script src="script.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>

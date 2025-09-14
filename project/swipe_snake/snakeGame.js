@@ -1,5 +1,5 @@
-class SnakeGame {
-    constructor(canvas, ctx) {
+export class SnakeGame {
+    constructor(canvas, ctx, controls) {
         this.canvas = canvas;
         this.ctx = ctx;
         this.box = 20;
@@ -19,12 +19,12 @@ class SnakeGame {
         this.gameStarted = false;
         this.gamePaused = false;
         // UI elements
-        this.wallToggle = document.getElementById('wallToggle');
-        this.levelSelect = document.getElementById('levelSelect');
-        this.baitTimeoutSelect = document.getElementById('baitTimeout');
-        this.saveSettingsBtn = document.getElementById('saveSettingsBtn');
-        this.startRestartBtn = document.getElementById('startRestartBtn');
-        this.pauseResumeBtn = document.getElementById('pauseResumeBtn');
+        this.wallToggle = controls.wallToggle;
+        this.levelSelect = controls.levelSelect;
+        this.baitTimeoutSelect = controls.baitTimeoutSelect;
+        this.saveSettingsBtn = controls.saveSettingsBtn;
+        this.startRestartBtn = controls.startRestartBtn;
+        this.pauseResumeBtn = controls.pauseResumeBtn;
         this.initUI();
         this.attachEvents();
         this.clearBoard();
@@ -248,9 +248,3 @@ class SnakeGame {
         this.canvas.height = size;
     }
 }
-
-// Initialize the game
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const snakeGame = new SnakeGame(canvas, ctx);
-

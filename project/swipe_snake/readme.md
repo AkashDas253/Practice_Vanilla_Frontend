@@ -4,21 +4,21 @@
 Swipe Snake is a modern version of the classic Snake game playable with keyboard arrow keys (desktop) or swipe gestures (mobile). The game tracks your score and saves the highest score in your browser.
 
 ## Features
-**Arrow Key Controls** (desktop)
-**Swipe Gesture Controls** (mobile)
-**Pause/Resume Game**
-**Restart Game**
-**Score Tracking** with **Highest Score** saved in localStorage and displayed on UI
-**Game Over** when the snake collides with walls, itself, or obstacles
-**Obstacles**: New obstacles appear as you score higher
-**Increasing Speed**: The game gets faster every 5 points
-**Sound Effects**: Eating food and game over events play sounds
-**Animated Food & Game Over**: Visual feedback for eating and losing
-**Improved Mobile UI**: Responsive design for phones/tablets
-**Wall Type Selector**: Toggle button to switch between Classic and Teleporter wall modes (top of UI)
-**Level Selection**: Choose starting level/speed (top of UI)
-**Bait Timeout Setting**: Adjust how long food remains before disappearing (top of UI)
-**Settings Panel**: All options are at the top of the game UI for easy access
+- **Arrow Key Controls** (desktop)
+- **Swipe Gesture Controls** (mobile)
+- **Pause/Resume Game**
+- **Restart Game**
+- **Score Tracking** with **Highest Score** saved in localStorage and displayed on UI
+- **Game Over** when the snake collides with walls, itself, or obstacles
+- **Obstacles**: New obstacles appear as you score higher
+- **Increasing Speed**: The game gets faster every 5 points
+- **Sound Effects**: Eating food and game over events play sounds
+- **Animated Food & Game Over**: Visual feedback for eating and losing
+- **Improved Mobile UI**: Responsive design for phones/tablets
+- **Wall Type Selector**: Toggle button to switch between Classic and Teleporter wall modes (top of UI)
+- **Level Selection**: Choose starting level/speed (top of UI)
+- **Bait Timeout Setting**: Adjust how long food remains before disappearing (top of UI)
+- **Settings Panel**: All options are at the top of the game UI for easy access
 
 ## How to Play
 At the top of the game, use the **Wall Type Toggle** to switch between Classic (snake dies on wall) and Teleporter (snake wraps around walls) modes.
@@ -50,7 +50,8 @@ This game runs directly in the browser and doesn't require any server-side compo
 swipe_snake/
 ├── index.html      # Main HTML file
 ├── style.css       # CSS for styling
-├── script.js       # JavaScript game logic
+├── snakeGame.js    # Game logic class (ES module)
+├── main.js         # App initialization and UI wiring (ES module)
 ├── readme.md       # Project documentation
 ```
 ## Screenshots
@@ -63,11 +64,13 @@ _Add screenshots here to showcase new UI and features!_
 	cd project/swipe_snake
 	```
 3. Open the `index.html` file in any modern browser (Chrome, Firefox, etc.).
+	- Make sure your browser supports ES modules (most modern browsers do).
+	- The game logic is now split into `snakeGame.js` (class) and `main.js` (initialization).
 4. Start playing and enjoy!
 
 ## Dependencies
 
-None (Pure HTML, CSS, and JavaScript)
+None (Pure HTML, CSS, and JavaScript ES modules)
 
 ## Credits:
 - Developed by Akash Das

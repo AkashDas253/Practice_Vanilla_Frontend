@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Hover Effects Demo</title>
+    <link rel="stylesheet" href="glow.css">
+    <link rel="stylesheet" href="slide.css">
+    <link rel="stylesheet" href="scale.css">
+    <link rel="stylesheet" href="border.css">
+    <link rel="stylesheet" href="shadow.css">
+    <link rel="stylesheet" href="rotate.css">
+    <link rel="stylesheet" href="ripple.css">
+    <link rel="stylesheet" href="gradient.css">
+    <link rel="stylesheet" href="flip.css">
+    <link rel="stylesheet" href="pulse.css">
+    <link rel="stylesheet" href="outlinefill.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 32px 24px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 24px;
+        }
+        .demo-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Button Hover Effects Demo</h1>
+        <div class="demo-btns">
+            <button class="btn-glow">Glow Effect</button>
+            <button class="btn-slide"><span>Slide Effect</span></button>
+            <button class="btn-scale">Scale Effect</button>
+            <button class="btn-border">Border Effect</button>
+            <button class="btn-shadow">Shadow Effect</button>
+            <button class="btn-rotate">Rotate Effect</button>
+            <button class="btn-ripple"><span>Ripple Effect</span></button>
+            <button class="btn-gradient">Gradient Effect</button>
+            <button class="btn-flip"><span class="btn-flip-inner"><span class="btn-flip-front">Flip Front</span><span class="btn-flip-back">Flip Back</span></span></button>
+            <button class="btn-pulse">Pulse Effect</button>
+            <button class="btn-outlinefill"><span>Outline Fill Effect</span></button>
+        </div>
+    </div>
+</body>
+</html>

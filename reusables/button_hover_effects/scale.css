@@ -1,0 +1,12 @@
+.btn-scale {
+    background: #e53935;
+    color: #fff;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: transform 0.2s;
+}
+.btn-scale:hover {
+    transform: scale(1.12);
+}

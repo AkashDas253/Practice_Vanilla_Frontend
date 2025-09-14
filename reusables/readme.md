@@ -1,5 +1,12 @@
 ## Reusables
 
+- [Button Hover Effects](button_hover_effects/readme.md)
+
+   * Smooth background color change
+   * Border highlight on hover
+   * Text shadow effect
+   * Icon rotation or scale on hover
+
 <!-- Here’s a list of **effects, animations, and interactions** you can practice and build as **reusable components** in vanilla frontend development. These can be styled with CSS and enhanced with JavaScript where needed. Once you build them, you can easily plug them into different projects.
 
 ---

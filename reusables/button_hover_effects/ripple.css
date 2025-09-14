@@ -1,0 +1,31 @@
+.btn-ripple {
+    position: relative;
+    overflow: hidden;
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 6px;
+    font-size: 1em;
+}
+.btn-ripple:after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.4);
+    border-radius: 100%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+    z-index: 1;
+}
+.btn-ripple:hover:after {
+    width: 200px;
+    height: 200px;
+}
+.btn-ripple span {
+    position: relative;
+    z-index: 2;
+}

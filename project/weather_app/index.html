@@ -29,17 +29,15 @@
                 <h2>Current Weather</h2>
                 <div id="weather-icon"></div>
                 <p id="current-temperature"></p>
-                <p id="current-humidity"></p>
-                <p id="current-wind"></p>
-                <div id="loading-spinner" class="loading-spinner" style="display:none;"></div>
             </div>
 
-            <div id="hourly-forecast" class="weather-section">
-                <h2>Hourly Forecast</h2>
-                <div id="hourly-data" class="hourly-data"></div>
+            <div id="hourly-graph" class="weather-section">
+                <h2>Temperature (Last 24 Hours)</h2>
+                <canvas id="hourly-temp-chart" width="600" height="300"></canvas>
             </div>
         </div>
     </div>
     <script src="script.js"></script>
 </body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </html>

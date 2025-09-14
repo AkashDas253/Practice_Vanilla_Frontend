@@ -108,12 +108,47 @@ function attachWeatherData(data, cityName) {
     locationName.textContent = `Location: ${cityName}`;
     coordinates.textContent = `Lat: ${data.latitude}, Lon: ${data.longitude}`;
     // Update weather info
-    updateCurrentWeather({
-        temperature_2m: data.current.temperature_2m,
-        wind_speed_10m: data.current.wind_speed_10m,
-        relative_humidity_2m: data.hourly.relative_humidity_2m ? data.hourly.relative_humidity_2m[0] : null
-    });
-    updateHourlyForecast(data.hourly);
+    // Show current weather (use last value from hourly)
+    if (data.hourly && data.hourly.temperature_2m) {
+        const temps = data.hourly.temperature_2m;
+        const times = data.hourly.time;
+        const lastIdx = temps.length - 1;
+        document.getElementById('current-temperature').textContent = `Temperature: ${temps[lastIdx]} °C`;
+        document.getElementById('weather-icon').textContent = temps[lastIdx] >= 30 ? '☀️' : temps[lastIdx] >= 20 ? '🌤️' : temps[lastIdx] >= 10 ? '🌦️' : '❄️';
+        // Draw hourly graph
+        const chartEl = document.getElementById('hourly-temp-chart');
+        if (chartEl) {
+            let labels = [], values = [];
+            for (let i = 0; i < times.length; i++) {
+                labels.push(times[i].slice(11, 16));
+                values.push(temps[i]);
+            }
+            if (window.hourlyTempChart) window.hourlyTempChart.destroy();
+            window.hourlyTempChart = new Chart(chartEl, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Temperature (°C)',
+                        data: values,
+                        borderColor: '#007bff',
+                        backgroundColor: 'rgba(0,123,255,0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: { title: { display: true, text: 'Hour' } },
+                        y: { title: { display: true, text: 'Temperature (°C)' } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+    }
     searchContainer.classList.add('hidden');
     resultContainer.classList.remove('hidden');
 }

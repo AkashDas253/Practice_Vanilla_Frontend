@@ -11,10 +11,17 @@
         <canvas id="gameCanvas" width="400" height="400"></canvas>
         <h1>Snake Game</h1>
         <div class="controls">
-        <span id="score">Score: 0</span>
-        <span id="highScore">Highest: 0</span>
-        <button id="restartBtn" style="display: none;">Restart</button>
-        <button id="pauseBtn">Pause</button>
+            <span id="score">Score: 0</span>
+            <span id="highScore">Highest: 0</span>
+            <button id="restartBtn" style="display: none;">Restart</button>
+            <button id="pauseBtn">Pause</button>
+        </div>
+        <div class="settings-panel">
+            <label for="modeSelect">Mode:</label>
+            <select id="modeSelect">
+                <option value="classic">Classic</option>
+                <option value="teleport">Wall Teleporter</option>
+            </select>
         </div>
     </div>
     <!-- Sound effects -->

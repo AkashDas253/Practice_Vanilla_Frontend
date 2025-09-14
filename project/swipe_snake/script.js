@@ -11,6 +11,7 @@ let direction;
 let food;
 let swipeStart = null;
 let game;
+let mode = 'classic';
 
 // Initialize Game
 function initGame() {
@@ -29,6 +30,12 @@ function initGame() {
     clearInterval(game);
     game = setInterval(draw, 100);
 }
+
+// Settings panel event
+document.getElementById('modeSelect').addEventListener('change', function(e) {
+    mode = e.target.value;
+    initGame();
+});
 
 // Pause the Game
 document.getElementById('pauseBtn').addEventListener('click', () => {
@@ -140,8 +147,16 @@ function draw() {
     // Draw the new head before collision check
     snake.unshift(newHead);
 
+    // Wall Teleporter logic
+    if (mode === 'teleport') {
+        if (snakeX < 0) newHead.x = canvas.width - box;
+        if (snakeX >= canvas.width) newHead.x = 0;
+        if (snakeY < 0) newHead.y = canvas.height - box;
+        if (snakeY >= canvas.height) newHead.y = 0;
+    }
+
     // Now check for collision with Walls or Itself
-    if (snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || collision(newHead, snake.slice(1))) {
+    if (mode === 'classic' && (snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height)) {
         gameOver = true;
         document.getElementById('restartBtn').style.display = 'block';
         if (score > highestScore) {
@@ -153,6 +168,20 @@ function draw() {
             alert('Game Over!');
         }, 50);
         return; // Prevent further movement after game over
+    }
+    // Self-collision (applies to both modes)
+    if (collision(newHead, snake.slice(1))) {
+        gameOver = true;
+        document.getElementById('restartBtn').style.display = 'block';
+        if (score > highestScore) {
+            highestScore = score;
+            localStorage.setItem('highestScore', highestScore); // Save new highest score
+        }
+        clearInterval(game);
+        setTimeout(function() {
+            alert('Game Over!');
+        }, 50);
+        return;
     }
 }
 

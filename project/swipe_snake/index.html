@@ -11,11 +11,15 @@
         <canvas id="gameCanvas" width="400" height="400"></canvas>
         <h1>Snake Game</h1>
         <div class="controls">
-            <span id="score">Score: 0</span>
-            <button id="restartBtn" style="display: none;">Restart</button>
-            <button id="pauseBtn">Pause</button>
+        <span id="score">Score: 0</span>
+        <span id="highScore">Highest: 0</span>
+        <button id="restartBtn" style="display: none;">Restart</button>
+        <button id="pauseBtn">Pause</button>
         </div>
     </div>
+    <!-- Sound effects -->
+    <audio id="eatSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b6c2b2e.mp3" preload="auto"></audio>
+    <audio id="gameOverSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b6c2b2e.mp3" preload="auto"></audio>
     <script src="script.js"></script>
 </body>
 </html>

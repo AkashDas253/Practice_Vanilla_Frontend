@@ -119,6 +119,12 @@ function draw() {
     if (direction === 'RIGHT') snakeX += box;
     if (direction === 'DOWN') snakeY += box;
 
+    // Prepare new head position
+    const newHead = {
+        x: snakeX,
+        y: snakeY
+    };
+
     // Snake Eats Food
     if (snakeX === food.x && snakeY === food.y) {
         food = {
@@ -131,13 +137,11 @@ function draw() {
         snake.pop();
     }
 
-    const newHead = {
-        x: snakeX,
-        y: snakeY
-    };
+    // Draw the new head before collision check
+    snake.unshift(newHead);
 
-    // Check for Collision with Walls or Itself
-    if (snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || collision(newHead, snake)) {
+    // Now check for collision with Walls or Itself
+    if (snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || collision(newHead, snake.slice(1))) {
         gameOver = true;
         document.getElementById('restartBtn').style.display = 'block';
         if (score > highestScore) {
@@ -145,10 +149,11 @@ function draw() {
             localStorage.setItem('highestScore', highestScore); // Save new highest score
         }
         clearInterval(game);
-        alert('Game Over!');
+        setTimeout(function() {
+            alert('Game Over!');
+        }, 50);
+        return; // Prevent further movement after game over
     }
-
-    snake.unshift(newHead);
 }
 
 // Check if Snake Collides with Itself
@@ -163,8 +168,35 @@ function collision(head, array) {
 
 // Update Score
 function updateScore() {
-    document.getElementById('score').textContent = 'Score: ' + score + ' | Highest: ' + highestScore;
+    document.getElementById('score').textContent = 'Score: ' + score;
+    document.getElementById('highScore').textContent = 'Highest: ' + highestScore;
 }
+
+function endGame() {
+    gameOver = true;
+    clearInterval(game);
+    document.getElementById('restartBtn').style.display = 'block';
+    document.getElementById('pauseBtn').textContent = 'Pause';
+    // Play game over sound
+    const gameOverSound = document.getElementById('gameOverSound');
+    if (gameOverSound) gameOverSound.play();
+    // Animate game over (flash canvas)
+    let flashes = 0;
+    let flashInterval = setInterval(() => {
+        ctx.fillStyle = flashes % 2 === 0 ? 'rgba(255,0,0,0.3)' : 'rgba(255,255,255,0.3)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        flashes++;
+        if (flashes > 5) clearInterval(flashInterval);
+    }, 100);
+}
+
+// Responsive canvas for mobile
+window.addEventListener('resize', () => {
+    let size = Math.min(window.innerWidth, window.innerHeight, 400);
+    canvas.width = size;
+    canvas.height = size;
+});
+window.dispatchEvent(new Event('resize'));
 
 // Start the Game
 initGame();

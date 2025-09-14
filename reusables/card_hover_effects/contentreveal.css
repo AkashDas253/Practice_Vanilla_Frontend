@@ -1,0 +1,18 @@
+.card-contentreveal {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    overflow: hidden;
+    position: relative;
+}
+.card-contentreveal .card-extra {
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.4s, opacity 0.4s;
+    padding: 0 16px;
+}
+.card-contentreveal:hover .card-extra {
+    max-height: 80px;
+    opacity: 1;
+    padding: 16px;
+}

@@ -2,6 +2,9 @@
 
 - [Button Hover Effects](button_hover_effects/readme.md)
 - [Image Hover Effects](image_hover_effects/readme.md)
+- [Card Hover Effects](card_hover_effects/readme.md)
+- [Link Hover Effects](link_hover_effects/readme.md)
+
 
 <!-- Here’s a list of **effects, animations, and interactions** you can practice and build as **reusable components** in vanilla frontend development. These can be styled with CSS and enhanced with JavaScript where needed. Once you build them, you can easily plug them into different projects.
 

@@ -1,0 +1,15 @@
+.card-blur img {
+    transition: filter 1.2s;
+    width: 100%;
+    max-width: 320px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.card-blur:hover img {
+    filter: blur(3px) brightness(1.05);
+}
+.card-blur-imgwrap {
+    display: flex;
+    justify-content: center;
+}

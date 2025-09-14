@@ -1,0 +1,10 @@
+/* Scale up effect for links on hover */
+.link-scale {
+    color: #1976d2;
+    text-decoration: none;
+    transition: transform 0.3s;
+    display: inline-block;
+}
+.link-scale:hover {
+    transform: scale(1.12);
+}

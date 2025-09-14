@@ -1,0 +1,10 @@
+.card-liftglow {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+.card-liftglow:hover {
+    box-shadow: 0 8px 32px 0 rgba(25,118,210,0.25);
+    transform: translateY(-8px);
+}

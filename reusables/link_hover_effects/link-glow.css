@@ -1,0 +1,9 @@
+/* Glow effect for links on hover */
+.link-glow {
+    color: #1976d2;
+    text-decoration: none;
+    transition: text-shadow 0.3s;
+}
+.link-glow:hover {
+    text-shadow: 0 0 8px #90caf9, 0 0 16px #1976d2;
+}

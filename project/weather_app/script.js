@@ -120,8 +120,8 @@ function attachWeatherData(data, cityName) {
 
 // Show/hide loading spinner
 function setLoading(isLoading) {
-    const spinner = document.getElementById('loading-spinner');
-    if (spinner) spinner.style.display = isLoading ? 'block' : 'none';
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) overlay.style.display = isLoading ? 'flex' : 'none';
 }
 
 // Set weather icon based on temperature (simple logic)
@@ -174,6 +174,7 @@ function displayErrorMessage(message) {
 // Function to get weather for a given city name
 async function getWeatherForLocationName(cityName) {
     setLoading(true);
+    document.getElementById('current-weather').style.opacity = '0.5';
     try {
         const geocodeResponse = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(cityName)}&format=json&limit=1`);
         if (!geocodeResponse.ok) {
@@ -198,6 +199,7 @@ async function getWeatherForLocationName(cityName) {
         displayErrorMessage('An error occurred. Please try again.');
     }
     setLoading(false);
+    document.getElementById('current-weather').style.opacity = '1';
 }
 
 // Event listener for search button

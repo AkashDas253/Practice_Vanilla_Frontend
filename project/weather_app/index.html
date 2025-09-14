@@ -9,7 +9,8 @@
 <body>
     
     <div class="weather-container">
-        <div id="search-container" class="search-container">
+    <div id="loading-overlay" class="loading-overlay" style="display:none;"></div>
+    <div id="search-container" class="search-container">
             <div id="error-message" style="display:none; color:red;"></div>
 
             <h1>Weather Search</h1>
@@ -30,9 +31,7 @@
                 <p id="current-temperature"></p>
                 <p id="current-humidity"></p>
                 <p id="current-wind"></p>
-                <div id="loading-spinner" style="display:none;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Loading_2.gif" alt="Loading..." width="40" height="40" />
-                </div>
+                <div id="loading-spinner" class="loading-spinner" style="display:none;"></div>
             </div>
 
             <div id="hourly-forecast" class="weather-section">

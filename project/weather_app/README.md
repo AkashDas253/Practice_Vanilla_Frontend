@@ -1,4 +1,7 @@
+
 # Weather App 🌤️
+
+This is a simple web application that allows users to search for the current weather and hourly forecast of any city using the Open-Meteo and Nominatim APIs.
 
 ## Overview
 The Weather App is a simple web application that allows users to search for the current weather and hourly forecast of any city. The app uses the Open-Meteo API to fetch weather data and Nominatim for geocoding city names.
@@ -9,26 +12,19 @@ The Weather App is a simple web application that allows users to search for the 
 - **Error Handling**: Displays an error message if the city is not found or if there is an issue fetching the weather data.
 - **Responsive Design**: The app is designed to work across different devices.
 
-## Screenshots
-*(Include screenshots or GIFs of your app here)*
-
-## Demo
-*(Include a link to your live demo hosted on GitHub Pages or another platform if available)*
 
 ## Installation
 To run this project locally, follow these steps:
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/weather-app.git```
+1. **Clone the repository**
 
 2.  **Navigate to the project directory**:
 
     ```
-    cd weather-app
+    cd project/weather_app
     ```
 
-3.  **Open `index.html` in your browser**: You can simply double-click on the `index.html` file to open it in your default browser, or use a live server extension if you're using VSCode.
+3.  **Open `index.html` in your browser**: Double-click the `index.html` file to open it in your default browser, or use a live server extension if you're using VS Code.
 
 ## Usage
 
@@ -50,10 +46,10 @@ To run this project locally, follow these steps:
 
 
 ```
-weather-app/
+weather_app/
 │
 ├── index.html          # Main HTML file
-├── style.css           # CSS for styling
+├── styles.css          # CSS for styling
 ├── script.js           # JavaScript for functionality
 └── README.md           # Project documentation
 ```
@@ -86,8 +82,8 @@ The app handles the following errors:
 
 Contributions are welcome! If you find any bugs or have suggestions for improvements, feel free to open an issue or submit a pull request.
 
-License
--------
+
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 

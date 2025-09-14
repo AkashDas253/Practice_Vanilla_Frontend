@@ -14,6 +14,7 @@
 
             <h1>Weather Search</h1>
             <input type="text" id="city-input" placeholder="Enter city name..." autocomplete="off">
+            <div id="suggestions" class="suggestions" style="display:none;"></div>
             <button id="search-btn">Search</button>
         </div>
 
@@ -25,8 +26,13 @@
             </div>
             <div id="current-weather" class="weather-section">
                 <h2>Current Weather</h2>
+                <div id="weather-icon"></div>
                 <p id="current-temperature"></p>
+                <p id="current-humidity"></p>
                 <p id="current-wind"></p>
+                <div id="loading-spinner" style="display:none;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Loading_2.gif" alt="Loading..." width="40" height="40" />
+                </div>
             </div>
 
             <div id="hourly-forecast" class="weather-section">

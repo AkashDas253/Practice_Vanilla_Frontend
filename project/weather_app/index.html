@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <div class="weather-container">
+    <div id="loading-overlay" class="loading-overlay" style="display:none;"></div>
+    <div id="search-container" class="search-container">
+            <div id="error-message" style="display:none; color:red;"></div>
+
+            <h1>Weather Search</h1>
+            <input type="text" id="city-input" placeholder="Enter city name..." autocomplete="off">
+            <div id="suggestions" class="suggestions" style="display:none;"></div>
+            <button id="search-btn">Search</button>
+        </div>
+
+        <div id="result-container" class="result-container hidden">
+            <div id="location-info" class="location-info">
+                <div id="location-name"></div>
+                <div id="coordinates"></div>
+                <button id="new-city-btn">Search for a new city</button>
+            </div>
+            <div id="current-weather" class="weather-section">
+                <h2>Current Weather</h2>
+                <div id="weather-icon"></div>
+                <p id="current-temperature"></p>
+            </div>
+
+            <div id="hourly-graph" class="weather-section">
+                <h2>Temperature (Last 24 Hours)</h2>
+                <canvas id="hourly-temp-chart" width="600" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</html>

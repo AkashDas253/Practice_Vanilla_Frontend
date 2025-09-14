@@ -66,7 +66,12 @@ function endGame() {
     clearInterval(gameLoop);
     clearInterval(countdown);
     updateHighScore();
-    alert("Game Over! Your final score is: " + score);
+
+    // Show game over modal
+    const modal = document.getElementById("gameOverModal");
+    const finalScoreSpan = document.getElementById("finalScore");
+    finalScoreSpan.textContent = score;
+    modal.style.display = "flex";
 
     // Reset game state
     isPaused = false; // Ensure pause state is reset
@@ -170,6 +175,10 @@ function restartGame() {
     const pauseButton = document.getElementById("pauseButton");
     pauseButton.textContent = "⏸"; // Reset pause button
     isPaused = false; // Reset pause state
+
+    // Hide game over modal if visible
+    const modal = document.getElementById("gameOverModal");
+    if (modal) modal.style.display = "none";
 }
 
 // Click event for catching the box
@@ -182,6 +191,12 @@ box.addEventListener("click", function () {
     scoreDisplay.textContent = score;
 
     box.style.backgroundColor = getRandomColor(); // Change color only on click
+
+    // Add catch animation (grow/flash)
+    box.classList.add("catch-animate");
+    setTimeout(() => {
+        box.classList.remove("catch-animate");
+    }, 200);
 
     // Gradual speed increase
     if (score % 5 === 0 && speed > 500) {

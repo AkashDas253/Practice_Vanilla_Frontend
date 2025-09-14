@@ -35,6 +35,13 @@
 
     <div id="gameArea">
         <div id="box"></div>
+        <div id="gameOverModal" class="modal">
+            <div class="modal-content">
+                <h2>Game Over!</h2>
+                <p id="finalScoreText">Your final score is: <span id="finalScore">0</span></p>
+                <button onclick="restartGame()">Replay</button>
+            </div>
+        </div>
     </div>
 
     <audio id="clickSound" src="click_sound.mp3"></audio>

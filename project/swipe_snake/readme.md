@@ -1,6 +1,7 @@
+
 # Swipe Snake
 
-**Swipe Snake** is a modern version of the classic Snake game that you can play using either keyboard arrow keys or swipe gestures on a mobile touchscreen. The game tracks your score and saves the highest score in the browser's memory.
+Swipe Snake is a modern version of the classic Snake game playable with keyboard arrow keys (desktop) or swipe gestures (mobile). The game tracks your score and saves the highest score in your browser.
 
 ## Features:
 - **Arrow Key Controls** (for desktop)
@@ -26,21 +27,30 @@
 ## Requirements:
 This game runs directly in the browser and doesn't require any server-side components.
 
-## How to Run:
+## Installation
+
 1. Clone or download the project files.
-2. Open the `index.html` file in any modern browser (Chrome, Firefox, etc.).
-3. Start playing and enjoy!
+2. Navigate to the project directory:
+	```
+	cd project/swipe_snake
+	```
+3. Open the `index.html` file in any modern browser (Chrome, Firefox, etc.).
+4. Start playing and enjoy!
 
-## Code Structure:
-- **index.html**: The main HTML file containing the structure of the game.
-- **style.css**: The styles for the game canvas and buttons.
-- **script.js**: The main JavaScript file that contains the game logic, controls, and scoring.
+## Project Structure
 
-## Dependencies:
-- None (Pure HTML, CSS, and JavaScript)
+```
+swipe_snake/
+│
+├── index.html      # Main HTML file
+├── styles.css      # CSS for styling
+├── script.js       # JavaScript game logic
+└── readme.md       # Project documentation
+```
 
-## License:
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Dependencies
+
+None (Pure HTML, CSS, and JavaScript)
 
 ## Credits:
 - Developed by Akash Das

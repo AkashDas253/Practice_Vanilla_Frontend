@@ -12,15 +12,16 @@ let food;
 let swipeStart = null;
 let game;
 let mode = 'classic';
+let baitTimeout = 8000; // ms
+let baitTimer = null;
+let level = 1;
+let speed = 100;
 
 // Initialize Game
 function initGame() {
     snake = [{ x: 9 * box, y: 10 * box }];
     direction = 'RIGHT';
-    food = {
-        x: Math.floor(Math.random() * 19 + 1) * box,
-        y: Math.floor(Math.random() * 19 + 1) * box
-    };
+    placeFood();
     score = 0;
     gameOver = false;
     gamePaused = false;
@@ -28,13 +29,44 @@ function initGame() {
     document.getElementById('pauseBtn').textContent = 'Pause';
     updateScore();
     clearInterval(game);
-    game = setInterval(draw, 100);
+    speed = 120 - (level - 1) * 20;
+    game = setInterval(draw, speed);
+    resetBaitTimer();
 }
 
-// Settings panel event
-document.getElementById('modeSelect').addEventListener('change', function(e) {
-    mode = e.target.value;
+function placeFood() {
+    food = {
+        x: Math.floor(Math.random() * 19 + 1) * box,
+        y: Math.floor(Math.random() * 19 + 1) * box
+    };
+    resetBaitTimer();
+}
+
+function resetBaitTimer() {
+    if (baitTimer) clearTimeout(baitTimer);
+    baitTimer = setTimeout(() => {
+        placeFood();
+    }, baitTimeout);
+}
+
+// Wall type toggle button
+document.getElementById('wallToggle').addEventListener('click', function() {
+    mode = (mode === 'classic') ? 'teleport' : 'classic';
+    this.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
     initGame();
+});
+
+// Level selector
+document.getElementById('levelSelect').addEventListener('change', function(e) {
+    level = parseInt(e.target.value);
+    initGame();
+});
+
+// Bait timeout input
+document.getElementById('baitTimeout').addEventListener('change', function(e) {
+    let val = parseInt(e.target.value);
+    baitTimeout = Math.max(2000, Math.min(val * 1000, 20000));
+    resetBaitTimer();
 });
 
 // Pause the Game
@@ -134,12 +166,9 @@ function draw() {
 
     // Snake Eats Food
     if (snakeX === food.x && snakeY === food.y) {
-        food = {
-            x: Math.floor(Math.random() * 19 + 1) * box,
-            y: Math.floor(Math.random() * 19 + 1) * box
-        };
         score++;
         updateScore();
+        placeFood();
     } else {
         snake.pop();
     }

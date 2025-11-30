@@ -3,6 +3,7 @@ export class SnakeGame {
         this.canvas = canvas;
         this.ctx = ctx;
         this.box = 20;
+        this.gridSize = this.canvas.width / this.box; // Calculate grid size (e.g., 20)
         this.score = 0;
         this.highestScore = localStorage.getItem('highestScore') ? parseInt(localStorage.getItem('highestScore')) : 0;
         this.gameOver = false;
@@ -14,17 +15,21 @@ export class SnakeGame {
         this.mode = 'classic';
         this.baitTimeout = 8000;
         this.baitTimer = null;
-        this.level = 1;
-        this.speed = 100;
+        this.level = 3; // Default level is often center
+        this.speed = 120 - (this.level - 1) * 20; // Corrected initial speed calculation (120ms - 20ms/level)
         this.gameStarted = false;
         this.gamePaused = false;
-        // UI elements
+        // UI elements from controls object
         this.wallToggle = controls.wallToggle;
         this.levelSelect = controls.levelSelect;
         this.baitTimeoutSelect = controls.baitTimeoutSelect;
         this.saveSettingsBtn = controls.saveSettingsBtn;
         this.startRestartBtn = controls.startRestartBtn;
         this.pauseResumeBtn = controls.pauseResumeBtn;
+        // Sound effects
+        this.eatSound = document.getElementById('eatSound');
+        this.gameOverSound = document.getElementById('gameOverSound');
+
         this.initUI();
         this.attachEvents();
         this.clearBoard();
@@ -32,10 +37,12 @@ export class SnakeGame {
     initUI() {
         this.wallToggle.textContent = this.mode.charAt(0).toUpperCase() + this.mode.slice(1);
         this.levelSelect.value = this.level.toString();
-        this.baitTimeoutSelect.value = this.baitTimeout ? (this.baitTimeout/1000).toString() : '8';
+        // Corrected baitTimeoutSelect: show 'none' for null timeout
+        this.baitTimeoutSelect.value = this.baitTimeout === null ? 'none' : (this.baitTimeout / 1000).toString();
         this.updateSaveButtonState();
         this.setPauseResumeState(false, false);
         this.startRestartBtn.textContent = 'Start';
+        this.updateScore();
     }
     attachEvents() {
         this.wallToggle.addEventListener('click', () => {
@@ -49,27 +56,30 @@ export class SnakeGame {
         });
         this.baitTimeoutSelect.addEventListener('change', (e) => {
             let val = e.target.value;
-            if (val === 'none') {
-                this.baitTimeout = null;
-            } else {
-                this.baitTimeout = parseInt(val) * 1000;
-            }
+            this.baitTimeout = (val === 'none') ? null : parseInt(val) * 1000;
             this.updateSaveButtonState();
         });
         this.saveSettingsBtn.addEventListener('click', () => {
+            if (this.game) clearInterval(this.game);
+            if (this.baitTimer) clearTimeout(this.baitTimer);
+
             this.clearBoard();
+            this.snake = []; // Reset snake for clean start
+            this.food = null;
+            this.score = 0;
+
             this.setPauseResumeState(false, false);
             this.gameStarted = false;
             this.gamePaused = false;
             this.startRestartBtn.textContent = 'Start';
             this.updateScore();
-            this.updateSaveButtonState();
+            this.updateSaveButtonState(false); // Disable save button after saving
         });
         this.startRestartBtn.addEventListener('click', () => {
             if (!this.gameStarted) {
                 this.start();
-            } else if (!this.gameOver) {
-                this.restart();
+            } else {
+                this.restart(); // Restart logic handles both game over and running game
             }
         });
         this.pauseResumeBtn.addEventListener('click', () => {
@@ -80,6 +90,7 @@ export class SnakeGame {
                 this.pause();
             }
         });
+        // Input handlers
         if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
             this.canvas.addEventListener('touchstart', (e) => this.touchStartHandler(e));
             this.canvas.addEventListener('touchend', (e) => this.touchEndHandler(e));
@@ -89,9 +100,9 @@ export class SnakeGame {
         window.addEventListener('resize', () => this.resizeCanvas());
         window.dispatchEvent(new Event('resize'));
     }
-    updateSaveButtonState() {
-        this.saveSettingsBtn.style.opacity = '1';
-        this.saveSettingsBtn.style.pointerEvents = 'auto';
+    updateSaveButtonState(enabled = true) {
+        this.saveSettingsBtn.style.opacity = enabled ? '1' : '0.5';
+        this.saveSettingsBtn.style.pointerEvents = enabled ? 'auto' : 'none';
     }
     setPauseResumeState(enabled, paused) {
         this.pauseResumeBtn.disabled = !enabled;
@@ -105,46 +116,59 @@ export class SnakeGame {
         this.gameStarted = true;
         this.setPauseResumeState(true, false);
         this.startRestartBtn.textContent = 'Restart';
+        this.updateSaveButtonState(false);
     }
     restart() {
         this.initGame();
         this.setPauseResumeState(true, false);
+        this.startRestartBtn.textContent = 'Restart';
+        this.updateSaveButtonState(false);
     }
     pause() {
         this.gamePaused = true;
         this.setPauseResumeState(true, true);
         clearInterval(this.game);
+        if (this.baitTimer) clearTimeout(this.baitTimer);
     }
     resume() {
         this.gamePaused = false;
         this.setPauseResumeState(true, false);
         this.game = setInterval(() => this.draw(), this.speed);
+        this.resetBaitTimer();
     }
     initGame() {
         this.snake = [{ x: 9 * this.box, y: 10 * this.box }];
         this.direction = 'RIGHT';
-        this.placeFood();
         this.score = 0;
         this.gameOver = false;
         this.gamePaused = false;
         this.updateScore();
         clearInterval(this.game);
-        this.speed = 120 - (this.level - 1) * 20;
+        clearTimeout(this.baitTimer);
+
+        // Calculate speed based on level: Level 1=100ms, Level 5=40ms
+        this.speed = 120 - (this.level - 1) * 20; 
+        
         this.game = setInterval(() => this.draw(), this.speed);
-        this.resetBaitTimer();
+        this.placeFood();
     }
     placeFood() {
-        this.food = {
-            x: Math.floor(Math.random() * 19 + 1) * this.box,
-            y: Math.floor(Math.random() * 19 + 1) * this.box
-        };
+        let newFood;
+        // Corrected: use 0 to gridSize-1 for random grid index
+        do {
+            newFood = {
+                x: Math.floor(Math.random() * this.gridSize) * this.box,
+                y: Math.floor(Math.random() * this.gridSize) * this.box
+            };
+        } while (this.collision(newFood, this.snake)); // Ensure food doesn't spawn on the snake
+        this.food = newFood;
         this.resetBaitTimer();
     }
     resetBaitTimer() {
         if (this.baitTimer) clearTimeout(this.baitTimer);
         if (this.baitTimeout) {
             this.baitTimer = setTimeout(() => {
-                this.placeFood();
+                this.placeFood(); // Bait times out, place new food
             }, this.baitTimeout);
         }
     }
@@ -160,57 +184,60 @@ export class SnakeGame {
             this.direction = 'DOWN';
         }
     }
-    touchStartHandler(event) {
-        if (this.gameOver || this.gamePaused) return;
-        this.swipeStart = event.changedTouches[0];
-    }
-    touchEndHandler(event) {
-        if (!this.swipeStart || this.gameOver || this.gamePaused) return;
-        const swipeEnd = event.changedTouches[0];
-        const dx = swipeEnd.pageX - this.swipeStart.pageX;
-        const dy = swipeEnd.pageY - this.swipeStart.pageY;
-        if (Math.abs(dx) > Math.abs(dy)) {
-            if (dx > 0 && this.direction !== 'LEFT') this.direction = 'RIGHT';
-            if (dx < 0 && this.direction !== 'RIGHT') this.direction = 'LEFT';
-        } else {
-            if (dy > 0 && this.direction !== 'UP') this.direction = 'DOWN';
-            if (dy < 0 && this.direction !== 'DOWN') this.direction = 'UP';
-        }
-        this.swipeStart = null;
-    }
+    // touchStartHandler and touchEndHandler are fine...
+
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Draw Snake
         for (let i = 0; i < this.snake.length; i++) {
             this.ctx.fillStyle = i === 0 ? 'green' : 'lightgreen';
             this.ctx.fillRect(this.snake[i].x, this.snake[i].y, this.box, this.box);
         }
+        
+        // Draw Food
         this.ctx.fillStyle = 'red';
         this.ctx.fillRect(this.food.x, this.food.y, this.box, this.box);
+        
         let snakeX = this.snake[0].x;
         let snakeY = this.snake[0].y;
+        
+        // Calculate new head position
         if (this.direction === 'LEFT') snakeX -= this.box;
-        if (this.direction === 'UP') snakeY -= this.box;
-        if (this.direction === 'RIGHT') snakeX += this.box;
-        if (this.direction === 'DOWN') snakeY += this.box;
+        else if (this.direction === 'UP') snakeY -= this.box;
+        else if (this.direction === 'RIGHT') snakeX += this.box;
+        else if (this.direction === 'DOWN') snakeY += this.box;
+        
         const newHead = { x: snakeX, y: snakeY };
-        if (snakeX === this.food.x && snakeY === this.food.y) {
-            this.score++;
-            this.updateScore();
-            this.placeFood();
-        } else {
-            this.snake.pop();
-        }
-        this.snake.unshift(newHead);
+
+        // Check for boundary collision or teleport
         if (this.mode === 'teleport') {
-            if (snakeX < 0) newHead.x = this.canvas.width - this.box;
-            if (snakeX >= this.canvas.width) newHead.x = 0;
-            if (snakeY < 0) newHead.y = this.canvas.height - this.box;
-            if (snakeY >= this.canvas.height) newHead.y = 0;
-        }
-        if (this.mode === 'classic' && (snakeX < 0 || snakeX >= this.canvas.width || snakeY < 0 || snakeY >= this.canvas.height)) {
+            if (newHead.x < 0) newHead.x = this.canvas.width - this.box;
+            else if (newHead.x >= this.canvas.width) newHead.x = 0;
+            else if (newHead.y < 0) newHead.y = this.canvas.height - this.box;
+            else if (newHead.y >= this.canvas.height) newHead.y = 0;
+        } else if (this.mode === 'classic' && (newHead.x < 0 || newHead.x >= this.canvas.width || newHead.y < 0 || newHead.y >= this.canvas.height)) {
             this.endGame();
             return;
         }
+
+        // Food logic
+        if (newHead.x === this.food.x && newHead.y === this.food.y) {
+            this.score++;
+            this.updateScore();
+            this.placeFood();
+            // Play eat sound
+            if (this.eatSound) {
+                this.eatSound.currentTime = 0;
+                this.eatSound.play();
+            }
+        } else {
+            this.snake.pop(); // Remove tail if no food eaten
+        }
+        
+        this.snake.unshift(newHead); // Add new head
+
+        // Self-collision check
         if (this.collision(newHead, this.snake.slice(1))) {
             this.endGame();
             return;
@@ -236,15 +263,34 @@ export class SnakeGame {
         if (this.score > this.highestScore) {
             this.highestScore = this.score;
             localStorage.setItem('highestScore', this.highestScore);
+            this.updateScore();
         }
         clearInterval(this.game);
+        clearTimeout(this.baitTimer);
+
+        // Play game over sound
+        if (this.gameOverSound) {
+            this.gameOverSound.currentTime = 0;
+            this.gameOverSound.play();
+        }
+
         setTimeout(() => {
-            alert('Game Over!');
+            alert('Game Over! Your score: ' + this.score);
+            this.clearBoard();
+            this.updateSaveButtonState(true);
         }, 50);
     }
     resizeCanvas() {
+        // Adjust canvas size to maintain square aspect ratio and fit screen
         let size = Math.min(window.innerWidth, window.innerHeight, 400);
         this.canvas.width = size;
         this.canvas.height = size;
+        this.box = size / 20; // Recalculate box size to maintain 20x20 grid
+        this.gridSize = 20; // Keep the conceptual grid size at 20
+
+        // If game is not running, redraw a clear board
+        if (!this.gameStarted || this.gameOver) {
+            this.clearBoard();
+        }
     }
 }

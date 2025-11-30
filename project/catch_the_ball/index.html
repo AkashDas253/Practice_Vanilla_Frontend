@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catch the Box Game</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico"> 
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -35,8 +36,8 @@
 
     <div class="button-group">
         <button id="startButton" onclick="toggleGame()">Start</button>
-        <button id="pauseButton" onclick="togglePause()" disabled>⏸</button>
-        <button id="toggleSoundButton" onclick="toggleSound()">🔊</button>
+        <button id="pauseButton" onclick="togglePause()" disabled aria-label="Pause Game">⏸</button>
+        <button id="toggleSoundButton" onclick="toggleSound()" aria-label="Toggle Sound">🔊</button>
         <button id="restartButton" onclick="restartGame()">Restart</button>
     </div>
 

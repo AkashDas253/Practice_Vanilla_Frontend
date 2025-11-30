@@ -98,6 +98,14 @@ button:disabled {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     overflow: hidden; /* Ensure box doesn't leave the area */
     cursor: default;
+    /* Add transition for the miss-flash border */
+    transition: border 0.15s, box-shadow 0.15s; 
+}
+
+/* 🟥 New CSS for Miss Feedback */
+#gameArea.miss-flash {
+    border: 3px solid #ff4444; /* Bright red border */
+    box-shadow: 0 0 15px 5px rgba(255, 68, 68, 0.7);
 }
 
 #box {

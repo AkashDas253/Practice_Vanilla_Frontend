@@ -123,9 +123,7 @@ export class SnakeGame {
         this.saveSettingsBtn.style.pointerEvents = enabled ? 'auto' : 'none';
     }
     
-    // ------------------------------------------------------------------
-    // MISSING METHODS ADDED (Fixes 'setPauseResumeState is not a function' and 'Wall Type Not Changing' issues)
-    // ------------------------------------------------------------------
+    // --- Helper Methods ---
     setPauseResumeState(enabled, paused) {
         this.pauseResumeBtn.disabled = !enabled;
         this.pauseResumeBtn.textContent = paused ? 'Resume' : 'Pause';
@@ -155,7 +153,7 @@ export class SnakeGame {
         this.setPauseResumeState(true, true);
         clearInterval(this.game);
         if (this.baitTimer) clearTimeout(this.baitTimer);
-        this.drawOverlay('PAUSED'); // Ensure pause state is drawn immediately
+        this.drawOverlay('PAUSED');
     }
 
     resume() {
@@ -164,8 +162,6 @@ export class SnakeGame {
         this.game = setInterval(() => this.draw(), this.speed);
         this.resetBaitTimer();
     }
-    // ------------------------------------------------------------------
-
     // --- Game Logic Methods ---
     initGame() {
         this.snake = [{ x: 9 * this.box, y: 10 * this.box }];
@@ -206,7 +202,7 @@ export class SnakeGame {
     // --- Input Control with Debouncing ---
     directionControl(event) {
         if (this.gameOver || this.gamePaused) return;
-        let newDir = this.direction; // Use current active direction for check
+        let newDir = this.direction;
         if (event.keyCode == 37 && this.direction != 'RIGHT') {
             newDir = 'LEFT';
         } else if (event.keyCode == 38 && this.direction != 'DOWN') {
@@ -219,7 +215,6 @@ export class SnakeGame {
         this.nextDirection = newDir;
     }
     
-    // FIX: Use 'this.nextDirection' when setting direction to prevent immediate 180 turn bugs
     touchStartHandler(event) {
         this.swipeStart = event.touches[0];
     }
@@ -231,7 +226,6 @@ export class SnakeGame {
         
         let newDir = this.nextDirection;
         
-        // Use this.direction for the 180-degree check on touch as well
         if (Math.abs(dx) > Math.abs(dy)) {
             if (dx > 0 && this.direction !== 'LEFT') newDir = 'RIGHT';
             if (dx < 0 && this.direction !== 'RIGHT') newDir = 'LEFT';
@@ -245,19 +239,24 @@ export class SnakeGame {
 
     // --- Drawing Methods ---
     drawGrid() {
-        this.ctx.strokeStyle = '#eee'; 
-        for (let x = 0; x < this.canvas.width; x += this.box) {
+        // CORRECTION: Use a slightly darker color and line offset for visibility
+        this.ctx.strokeStyle = '#ccc'; // Slightly darker grey
+        this.ctx.lineWidth = 0.5;
+
+        for (let x = 0; x <= this.canvas.width; x += this.box) {
             this.ctx.beginPath();
-            this.ctx.moveTo(x, 0);
-            this.ctx.lineTo(x, this.canvas.height);
+            // Add 0.5 offset for crisp 1px lines on fractional coordinates
+            this.ctx.moveTo(x + 0.5, 0); 
+            this.ctx.lineTo(x + 0.5, this.canvas.height);
             this.ctx.stroke();
         }
-        for (let y = 0; y < this.canvas.height; y += this.box) {
+        for (let y = 0; y <= this.canvas.height; y += this.box) {
             this.ctx.beginPath();
-            this.ctx.moveTo(0, y);
-            this.ctx.lineTo(this.canvas.width, y);
+            this.ctx.moveTo(0, y + 0.5);
+            this.ctx.lineTo(this.canvas.width, y + 0.5);
             this.ctx.stroke();
         }
+        this.ctx.lineWidth = 1; // Reset line width for subsequent drawing
     }
     drawOverlay(text) {
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
@@ -292,7 +291,7 @@ export class SnakeGame {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawGrid(); 
+        this.drawGrid(); // Confirmed call order
 
         // Apply debounced direction change
         this.direction = this.nextDirection;
@@ -408,7 +407,8 @@ export class SnakeGame {
         this.canvas.width = size;
         this.canvas.height = size;
         this.box = size / 20;
-        this.gridSize = 20; // Re-calculate grid size 
+        // Fix: Re-calculate gridSize based on the new box size, even if 20 is the default count.
+        this.gridSize = this.canvas.width / this.box; 
         
         if (!this.gameStarted || this.gameOver) {
             this.clearBoard();

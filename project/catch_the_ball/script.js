@@ -1,10 +1,14 @@
 let score = 0;
 let highScore = localStorage.getItem("highScore") || 0;
-let timeLeft = 30;
 let speed = 1000; // Default speed
-let gameLoop;
-let countdown;
+let gameLoop = null;
+let countdown = null;
+let isGameRunning = false;
+let isPaused = false; // Track pause state
+let soundEnabled = true; // Track sound state
+let timeLeft = 30; // Will be set by input on game start
 
+// DOM Elements
 const box = document.getElementById("box");
 const scoreDisplay = document.getElementById("score");
 const highScoreDisplay = document.getElementById("highScore");
@@ -12,14 +16,22 @@ const timerDisplay = document.getElementById("timer");
 const clickSound = document.getElementById("clickSound");
 const difficultySelect = document.getElementById("difficulty");
 const timeLimitInput = document.getElementById("timeLimit");
+const gameArea = document.getElementById("gameArea"); // Added gameArea reference
+const startButton = document.getElementById("startButton");
+const pauseButton = document.getElementById("pauseButton");
+const modal = document.getElementById("gameOverModal");
+const finalScoreSpan = document.getElementById("finalScore");
 
-let isPaused = false; // Track pause state
-let soundEnabled = true; // Track sound state
-
+// Initial Setup
 highScoreDisplay.textContent = highScore;
+timerDisplay.textContent = timeLimitInput.value;
+pauseButton.disabled = true; // Disable pause button initially
 
 // Function to move the box randomly
 function moveBox() {
+    // Check if gameArea is defined and box is present
+    if (!gameArea || !box) return;
+
     let maxX = gameArea.clientWidth - box.clientWidth;
     let maxY = gameArea.clientHeight - box.clientHeight;
 
@@ -42,6 +54,8 @@ function startTimer() {
     timerDisplay.textContent = timeLeft;
 
     countdown = setInterval(() => {
+        if (isPaused) return;
+
         timeLeft--;
         timerDisplay.textContent = timeLeft;
 
@@ -57,86 +71,91 @@ function updateHighScore() {
         highScore = score;
         localStorage.setItem("highScore", highScore);
         highScoreDisplay.textContent = highScore;
-        alert("New High Score: " + highScore);
+        // Optionally, remove the alert to be less intrusive
+        // alert("New High Score: " + highScore); 
     }
 }
 
 // Function to handle game over
 function endGame() {
+    if (!isGameRunning) return; // Prevent double calls
+
     clearInterval(gameLoop);
     clearInterval(countdown);
+    isGameRunning = false;
+    isPaused = false;
+
     updateHighScore();
 
     // Show game over modal
-    const modal = document.getElementById("gameOverModal");
-    const finalScoreSpan = document.getElementById("finalScore");
     finalScoreSpan.textContent = score;
     modal.style.display = "flex";
 
-    // Reset game state
-    isPaused = false; // Ensure pause state is reset
-    const pauseButton = document.getElementById("pauseButton");
-    pauseButton.textContent = "⏸"; // Reset pause button to default state
-
-    const startButton = document.getElementById("startButton");
-    startButton.textContent = "Start"; // Reset start button to default state
-    startButton.classList.remove("running"); // Remove running class
+    // Update buttons
+    startButton.textContent = "Start";
+    startButton.classList.remove("running");
+    pauseButton.textContent = "⏸";
+    pauseButton.disabled = true;
+    box.style.pointerEvents = "none"; // Disable box clicks
 }
 
-// Function to start the game
+// Function to start a new game session
 function startGame() {
     score = 0;
     scoreDisplay.textContent = score;
     speed = parseInt(difficultySelect.value);
-    timeLeft = parseInt(timeLimitInput.value);
-
-    if (timeLeft < 30 || timeLeft > 600) {
-        alert("Please enter a time between 30 seconds and 10 minutes.");
+    
+    // Time validation
+    const requestedTime = parseInt(timeLimitInput.value);
+    if (requestedTime < 30 || requestedTime > 600) {
+        alert("Please enter a time between 30 seconds (30) and 10 minutes (600).");
         return;
     }
+    timeLeft = requestedTime;
+    timerDisplay.textContent = timeLeft;
 
+    // Clear existing intervals
     clearInterval(gameLoop);
     clearInterval(countdown);
 
     box.style.pointerEvents = "auto"; // Ensure the box is clickable
+    box.style.backgroundColor = getRandomColor(); // Set initial color
 
     startTimer();
     gameLoop = setInterval(moveBox, speed);
+    isGameRunning = true;
+    isPaused = false;
+
+    // Update buttons
+    startButton.textContent = "End";
+    startButton.classList.add("running");
+    pauseButton.textContent = "⏸";
+    pauseButton.disabled = false;
+    modal.style.display = "none"; // Hide modal
 }
 
 // Function to toggle game start/end
 function toggleGame() {
-    const startButton = document.getElementById("startButton");
-    const pauseButton = document.getElementById("pauseButton");
-
-    if (startButton.textContent === "Start") {
-        startGame();
-        startButton.textContent = "End";
-        startButton.classList.add("running");
-        pauseButton.textContent = "⏸"; // Ensure pause button is reset
-    } else {
+    if (isGameRunning) {
         endGame();
+    } else {
+        startGame();
     }
 }
 
 // Function to toggle pause/resume
 function togglePause() {
-    const pauseButton = document.getElementById("pauseButton");
-    if (isPaused) {
-        gameLoop = setInterval(moveBox, speed);
-        countdown = setInterval(() => {
-            timeLeft--;
-            timerDisplay.textContent = timeLeft;
+    if (!isGameRunning) return;
 
-            if (timeLeft <= 0) {
-                endGame();
-            }
-        }, 1000);
+    if (isPaused) {
+        // Resume
+        gameLoop = setInterval(moveBox, speed);
+        // Countdown interval resumes inside startTimer logic, managed by the isPaused check
         box.style.pointerEvents = "auto"; // Enable box clicks
         pauseButton.textContent = "⏸"; // Pause symbol
     } else {
+        // Pause
         clearInterval(gameLoop);
-        clearInterval(countdown);
         box.style.pointerEvents = "none"; // Disable box clicks
         pauseButton.textContent = "▶"; // Play symbol
     }
@@ -152,40 +171,27 @@ function toggleSound() {
 
 // Function to restart the game
 function restartGame() {
+    // This function simply ensures a clean slate and calls startGame
     clearInterval(gameLoop);
     clearInterval(countdown);
+    isGameRunning = false;
+    isPaused = false;
 
-    score = 0;
-    timeLeft = parseInt(timeLimitInput.value);
-    speed = parseInt(difficultySelect.value);
+    // Reset UI before calling startGame
+    timerDisplay.textContent = timeLimitInput.value;
+    modal.style.display = "none";
 
-    scoreDisplay.textContent = score;
-    timerDisplay.textContent = timeLeft;
-
-    box.style.pointerEvents = "auto"; // Ensure the box is clickable
-    box.style.backgroundColor = "red"; // Reset box color
-
-    startTimer();
-    gameLoop = setInterval(moveBox, speed);
-
-    const startButton = document.getElementById("startButton");
-    startButton.textContent = "End";
-    startButton.classList.add("running");
-
-    const pauseButton = document.getElementById("pauseButton");
-    pauseButton.textContent = "⏸"; // Reset pause button
-    isPaused = false; // Reset pause state
-
-    // Hide game over modal if visible
-    const modal = document.getElementById("gameOverModal");
-    if (modal) modal.style.display = "none";
+    // Start a fresh game
+    startGame();
 }
 
 // Click event for catching the box
 box.addEventListener("click", function () {
-    if (isPaused) return; // Prevent clicks during pause
+    if (isPaused || !isGameRunning) return; // Prevent clicks during pause or if not running
+
     if (soundEnabled) {
-        clickSound.play(); // Play MP3 sound
+        clickSound.currentTime = 0; // Rewind to start for quick repeated clicks
+        clickSound.play().catch(e => console.log("Sound play failed:", e)); // Add catch for potential play error
     }
     score++;
     scoreDisplay.textContent = score;
@@ -199,11 +205,11 @@ box.addEventListener("click", function () {
     }, 200);
 
     // Gradual speed increase
-    if (score % 5 === 0 && speed > 500) {
+    if (score % 5 === 0 && speed > 100) { // Set a reasonable minimum speed (e.g., 100ms)
         speed -= 50; // Reduce speed increment
         clearInterval(gameLoop);
         gameLoop = setInterval(moveBox, speed);
     }
 
-    moveBox();
+    moveBox(); // Move immediately upon click
 });

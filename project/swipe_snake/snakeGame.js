@@ -25,6 +25,7 @@ export class SnakeGame {
         this.gameStarted = false;
         this.gamePaused = false;
         this.scorePopup = null; // For score pop-up
+        this.obstacles = []; // NEW: Data structure for obstacles
 
         // UI elements
         this.wallToggle = controls.wallToggle;
@@ -82,6 +83,7 @@ export class SnakeGame {
             this.snake = [];
             this.food = null;
             this.score = 0;
+            this.obstacles = []; // RESET obstacles
 
             this.setPauseResumeState(false, false);
             this.gameStarted = false;
@@ -170,6 +172,7 @@ export class SnakeGame {
         this.score = 0;
         this.gameOver = false;
         this.gamePaused = false;
+        this.obstacles = []; // Ensure obstacles are clear on init
         this.updateScore();
         clearInterval(this.game);
         clearTimeout(this.baitTimer);
@@ -179,14 +182,37 @@ export class SnakeGame {
         this.game = setInterval(() => this.draw(), this.speed);
         this.placeFood();
     }
+    
+    // NEW: Obstacle generation logic
+    generateObstacles() {
+        // Clear previous obstacles
+        this.obstacles = []; 
+
+        // Add 5 obstacles for every 10 points scored (e.g., at score 10, 20, 30...)
+        const numObstacles = Math.floor(this.score / 10) * 5; 
+        
+        for (let i = 0; i < numObstacles; i++) {
+            let newObstacle;
+            do {
+                newObstacle = {
+                    x: Math.floor(Math.random() * this.gridSize) * this.box,
+                    y: Math.floor(Math.random() * this.gridSize) * this.box
+                };
+            } while (this.collision(newObstacle, this.snake) || this.collision(newObstacle, [this.food]) || this.collision(newObstacle, this.obstacles));
+            
+            this.obstacles.push(newObstacle);
+        }
+    }
+    
     placeFood() {
         let newFood;
+        // Check collision against snake, obstacles, and the current food location
         do {
             newFood = {
                 x: Math.floor(Math.random() * this.gridSize) * this.box,
                 y: Math.floor(Math.random() * this.gridSize) * this.box
             };
-        } while (this.collision(newFood, this.snake)); 
+        } while (this.collision(newFood, this.snake) || this.collision(newFood, this.obstacles)); 
         this.food = newFood;
         this.resetBaitTimer();
     }
@@ -239,13 +265,11 @@ export class SnakeGame {
 
     // --- Drawing Methods ---
     drawGrid() {
-        // CORRECTION: Use a slightly darker color and line offset for visibility
-        this.ctx.strokeStyle = '#ccc'; // Slightly darker grey
+        this.ctx.strokeStyle = '#ccc'; 
         this.ctx.lineWidth = 0.5;
 
         for (let x = 0; x <= this.canvas.width; x += this.box) {
             this.ctx.beginPath();
-            // Add 0.5 offset for crisp 1px lines on fractional coordinates
             this.ctx.moveTo(x + 0.5, 0); 
             this.ctx.lineTo(x + 0.5, this.canvas.height);
             this.ctx.stroke();
@@ -256,7 +280,7 @@ export class SnakeGame {
             this.ctx.lineTo(this.canvas.width, y + 0.5);
             this.ctx.stroke();
         }
-        this.ctx.lineWidth = 1; // Reset line width for subsequent drawing
+        this.ctx.lineWidth = 1; 
     }
     drawOverlay(text) {
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
@@ -291,10 +315,16 @@ export class SnakeGame {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawGrid(); // Confirmed call order
+        this.drawGrid(); 
 
         // Apply debounced direction change
         this.direction = this.nextDirection;
+        
+        // Draw Obstacles
+        this.ctx.fillStyle = '#333'; // Dark grey for obstacles
+        for (let i = 0; i < this.obstacles.length; i++) {
+            this.ctx.fillRect(this.obstacles[i].x, this.obstacles[i].y, this.box, this.box);
+        }
 
         // Draw Snake
         for (let i = 0; i < this.snake.length; i++) {
@@ -322,6 +352,11 @@ export class SnakeGame {
             this.score++;
             this.updateScore();
             this.scorePopup = { x: this.food.x, y: this.food.y, opacity: 1.0 };
+            
+            // Check if it's time to add or remove obstacles
+            if (this.score % 10 === 0) {
+                this.generateObstacles();
+            }
             this.placeFood();
             
             if (this.eatSound) {
@@ -332,7 +367,7 @@ export class SnakeGame {
             this.snake.pop(); // Remove tail if no food eaten
         }
         
-        // Wall/Teleport Logic applied to newHead (This is where the mode logic is applied)
+        // Wall/Teleport Logic applied to newHead
         if (this.mode === 'teleport') {
             if (newHead.x < 0) newHead.x = this.canvas.width - this.box;
             else if (newHead.x >= this.canvas.width) newHead.x = 0;
@@ -347,6 +382,12 @@ export class SnakeGame {
 
         // Self-collision check
         if (this.collision(newHead, this.snake.slice(1))) {
+            this.endGame();
+            return;
+        }
+        
+        // NEW: Obstacle collision check
+        if (this.collision(newHead, this.obstacles)) {
             this.endGame();
             return;
         }
@@ -407,7 +448,6 @@ export class SnakeGame {
         this.canvas.width = size;
         this.canvas.height = size;
         this.box = size / 20;
-        // Fix: Re-calculate gridSize based on the new box size, even if 20 is the default count.
         this.gridSize = this.canvas.width / this.box; 
         
         if (!this.gameStarted || this.gameOver) {

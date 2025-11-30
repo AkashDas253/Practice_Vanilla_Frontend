@@ -24,7 +24,7 @@ canvas {
     border: 2px solid #000;
     display: block;
     margin: 0 auto;
-    background: #e0f7fa;
+    background: #e0f7fa; /* Light background for the grid */
     box-shadow: 0 4px 24px rgba(0,0,0,0.12);
     transition: box-shadow 0.3s;
     max-width: 100%; 
@@ -95,7 +95,7 @@ select {
     }
     
     canvas {
-        /* Sets canvas to be 90% of viewport width, making it dynamically square */
+        /* Dynamically sets canvas size to 90% of viewport width, maintaining square aspect */
         width: 90vw !important;
         height: 90vw !important;
         max-width: 90vw;
@@ -111,6 +111,7 @@ select {
     .score-bar h1 {
         order: -1; 
         width: 100%;
+        font-size: 24px;
     }
 
     .settings-panel {
@@ -118,10 +119,11 @@ select {
         flex-wrap: wrap;
         justify-content: center;
         gap: 8px;
+        padding: 5px;
     }
     
-    .settings-panel label {
-        margin-left: 0 !important;
+    .settings-panel label, .settings-panel button, .settings-panel select {
+        margin: 2px 0 !important;
     }
 
     .controls {

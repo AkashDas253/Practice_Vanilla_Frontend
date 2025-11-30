@@ -20,7 +20,7 @@
             <select id="levelSelect">
                 <option value="1">1 (Slow)</option>
                 <option value="2">2</option>
-                <option value="3">3</option>
+                <option value="3" selected>3</option>
                 <option value="4">4</option>
                 <option value="5">5 (Fast)</option>
             </select>
@@ -28,7 +28,7 @@
             <select id="baitTimeout">
                 <option value="none">None</option>
                 <option value="4">4 sec</option>
-                <option value="8" selected>8 sec</option>
+                <option value="8">8 sec</option>
                 <option value="12">12 sec</option>
                 <option value="16">16 sec</option>
             </select>
@@ -40,8 +40,8 @@
             <button id="pauseResumeBtn" disabled>Pause</button>
         </div>
     </div>
-    <audio id="eatSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b6c2b2e.mp3" preload="auto"></audio>
-    <audio id="gameOverSound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_22822a16d5.mp3" preload="auto"></audio>
+    <audio id="eatSound" src="eat.mp3" preload="auto"></audio>
+    <audio id="gameOverSound" src="gameover.mp3" preload="auto"></audio>
     <script type="module" src="main.js"></script>
 </body>
 </html>

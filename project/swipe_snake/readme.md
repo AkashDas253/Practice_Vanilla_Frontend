@@ -1,77 +1,69 @@
 
 # Swipe Snake
 
-Swipe Snake is a modern version of the classic Snake game playable with keyboard arrow keys (desktop) or swipe gestures (mobile). The game tracks your score and saves the highest score in your browser.
+Swipe Snake is a modern, feature-rich version of the classic Snake game playable with keyboard arrow keys (desktop) or swipe gestures (mobile). The game tracks your score and saves the highest score in your browser.
 
-## Features
-- **Arrow Key Controls** (desktop)
-- **Swipe Gesture Controls** (mobile)
-- **Pause/Resume Game**
-- **Restart Game**
-- **Score Tracking** with **Highest Score** saved in localStorage and displayed on UI
-- **Game Over** when the snake collides with walls, itself, or obstacles
-- **Obstacles**: New obstacles appear as you score higher
-- **Increasing Speed**: The game gets faster every 5 points
-- **Sound Effects**: Eating food and game over events play sounds
-- **Animated Food & Game Over**: Visual feedback for eating and losing
-- **Improved Mobile UI**: Responsive design for phones/tablets
-- **Wall Type Selector**: Toggle button to switch between Classic and Teleporter wall modes (top of UI)
-- **Level Selection**: Choose starting level/speed (top of UI)
-- **Bait Timeout Setting**: Adjust how long food remains before disappearing (top of UI)
-- **Settings Panel**: All options are at the top of the game UI for easy access
+## ✨ Features
+- **Persistent Settings:** **Saves** your chosen **Wall Type**, **Level**, and **Bait Timeout** in the browser's storage.
+- **Wall Type Selector**: Toggle between **Classic** (snake dies on wall) and **Teleporter** (snake wraps around walls) modes.
+- **Level Selection**: Choose starting speed/difficulty (Level 1 is slow, Level 5 is fast).
+- **Bait Timeout Setting**: Adjust how long food remains before disappearing (or set to None).
+- **Arrow Key Controls** (desktop) and **Swipe Gesture Controls** (mobile).
+- **Input Debouncing:** Prevents immediate 180-degree turns and accidental self-collision.
+- **Pause/Resume Game** and **Restart Game**.
+- **Score Tracking** with **Highest Score** saved in `localStorage`.
+- **Visual Grid:** The canvas displays a light grid for better spatial awareness.
+- **Score Pop-up Animation:** Displays **"+1"** visual feedback when food is eaten.
+- **Game State Overlays:** Displays **PAUSED** and **GAME OVER** messages directly on the canvas.
+- **Sound Effects**: Eating food and game over events play sounds (requires local `eat.mp3` and `gameover.mp3`).
+- **Improved Mobile UI**: Responsive design for phones/tablets.
 
-## How to Play
-At the top of the game, use the **Wall Type Toggle** to switch between Classic (snake dies on wall) and Teleporter (snake wraps around walls) modes.
-Select your desired **Level** to start with a faster or slower snake.
-Adjust the **Bait Timeout** to set how long food remains before disappearing.
-Use the **Settings Panel** at the top for all game options.
-Game controls (Pause, Restart, etc.) are located at the bottom of the game UI.
-On **desktop**, use the **Arrow Keys** to control the snake (Up, Down, Left, Right).
-On **mobile devices**, swipe **Left**, **Right**, **Up**, or **Down** to control the snake.
-The snake moves continuously; eat the red food to increase your score and speed.
-Avoid hitting the walls, your own body, or obstacles that appear as you score higher.
-Use the **Pause** button to stop the game and **Resume** to continue. You can restart the game anytime.
-Sound effects and animations provide feedback for eating and game over.
+---
 
-## Game Controls
-**Wall Type Toggle**: Switch wall behavior (top of UI)
-**Level Selector**: Pick starting level/speed (top of UI)
-**Bait Timeout**: Set food timeout (top of UI)
-**Arrow Keys (Desktop)**: Control the snake's movement
-**Swipe (Mobile)**: Swipe left, right, up, or down to change the snake's direction
-**Pause Button**: Pauses the game and changes to a Resume button
-**Restart Button**: Restarts the game once the game is over
-**Sound Effects**: Eating and game over events play sounds (can be muted via browser tab)
+## 🕹️ How to Play
 
-## Requirements
-This game runs directly in the browser and doesn't require any server-side components.
-## Project Structure
+### Getting Started (Settings Panel)
+1.  Use the **Wall Type Toggle** to switch between **Classic** (snake dies on wall) and **Teleporter** (snake wraps around walls) modes.
+2.  Select your desired **Level** (speed) for a faster or slower game pace.
+3.  Adjust the **Bait Timeout** to set how long food remains before disappearing. Choose 'None' to disable the timeout.
+4.  Click the **Save** button to apply and store your settings permanently.
+
+### Controls
+* **Desktop:** Use the **Arrow Keys** (Up, Down, Left, Right).
+* **Mobile Devices:** Swipe **Left**, **Right**, **Up**, or **Down** anywhere on the canvas.
+* **Pause/Resume:** Use the button below the canvas to temporarily stop the game.
+
+### Gameplay
+The snake moves continuously; eat the red food to increase your score and length.
+
+* In **Classic** mode, avoid hitting the outer walls or your own body.
+* In **Teleporter** mode, hitting a wall wraps the snake to the opposite side.
+* If Bait Timeout is enabled, food must be eaten before the timer expires.
+
+---
+
+## 🛠️ Project Structure
 ```
-swipe_snake/
-├── index.html      # Main HTML file
-├── style.css       # CSS for styling
-├── snakeGame.js    # Game logic class (ES module)
-├── main.js         # App initialization and UI wiring (ES module)
-├── readme.md       # Project documentation
+
+swipe\_snake/
+├── index.html      \# Main HTML file
+├── style.css       \# CSS for styling
+├── snakeGame.js    \# Game logic class and core methods (ES module)
+├── main.js         \# App initialization and UI wiring (ES module)
+├── readme.md       \# Project documentation
+├── eat.mp3         \# Eaten food sound effect (Required)
+└── gameover.mp3    \# Game over sound effect (Required)
+
 ```
-## Screenshots
 
-_Add screenshots here to showcase new UI and features!_
+## ▶️ Setup and Running
 
-1. Clone or download the project files.
-2. Navigate to the project directory:
-	```
-	cd project/swipe_snake
-	```
-3. Open the `index.html` file in any modern browser (Chrome, Firefox, etc.).
-	- Make sure your browser supports ES modules (most modern browsers do).
-	- The game logic is now split into `snakeGame.js` (class) and `main.js` (initialization).
-4. Start playing and enjoy!
+1.  Clone or download the project files.
+2.  **Ensure you have two local audio files (`eat.mp3` and `gameover.mp3`) in the main project folder.**
+3.  Navigate to the project directory.
+4.  Open the `index.html` file in any modern browser (Chrome, Firefox, Edge, etc.).
+5.  Start playing and enjoy!
 
-## Dependencies
+## 🤝 Dependencies
 
 None (Pure HTML, CSS, and JavaScript ES modules)
-
-## Credits:
-- Developed by Akash Das
-- Based on the classic Snake game.

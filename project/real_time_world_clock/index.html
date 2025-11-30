@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Time Converter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div id="app" class="w-full max-w-4xl bg-white p-6 md:p-10 rounded-xl shadow-2xl border border-gray-100">
+        <h1 class="text-3xl font-extrabold text-gray-800 mb-6 border-b pb-3">
+            Global Time Zone Converter
+        </h1>
+
+        <section class="grid md:grid-cols-2 gap-6">
+            <div class="p-6 bg-indigo-50 border border-indigo-100 rounded-xl">
+                <label for="sourceZone" class="block text-sm font-medium text-indigo-700 mb-2 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    My Time Zone (Source)
+                </label>
+                <select id="sourceZone" class="w-full p-3 border border-indigo-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out bg-white text-gray-700">
+                    </select>
+                <div class="mt-4 text-center">
+                    <p id="sourceTimeDisplay" class="text-4xl font-bold text-indigo-800 time-display animate-pulse">--:--:--</p>
+                    <p id="sourceDateDisplay" class="text-sm text-gray-500 mt-1"></p>
+                </div>
+            </div>
+
+            <div class="p-6 bg-purple-50 border border-purple-100 rounded-xl">
+                <label for="targetZone" class="block text-sm font-medium text-purple-700 mb-2 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 0 1 11.21 3 10 10 0 0 0 12 21a9 9 0 0 0 9-8.21z"></path></svg>
+                    Target Time Zone
+                </label>
+                <select id="targetZone" class="w-full p-3 border border-purple-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 transition duration-150 ease-in-out bg-white text-gray-700">
+                    </select>
+                <div class="mt-4 text-center">
+                    <p id="targetTimeDisplay" class="text-4xl font-bold text-purple-800 time-display">--:--:--</p>
+                    <p id="targetDateDisplay" class="text-sm text-gray-500 mt-1"></p>
+                    <p id="timeDifference" class="text-xs mt-2 font-semibold text-gray-600"></p>
+                </div>
+            </div>
+        </section>
+
+        <div id="message" class="mt-8 text-center text-sm">
+            <p id="loadingMessage" class="text-indigo-600 flex items-center justify-center font-medium hidden">
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Loading time zone data...
+            </p>
+            <p id="errorMessage" class="text-red-600 font-medium hidden"></p>
+        </div>
+
+        <footer class="mt-8 pt-6 border-t border-gray-200 text-center">
+            <p class="text-xs text-gray-500">
+                Data provided by the World Time API (`worldtimeapi.org`). All times update every second.
+            </p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

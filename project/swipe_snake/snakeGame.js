@@ -7,9 +7,11 @@ export class SnakeGame {
 
         this.highestScore = localStorage.getItem('highestScore') ? parseInt(localStorage.getItem('highestScore')) : 0;
         
-        // Load persistent settings
+        // --- Load persistent settings ---
         this.mode = localStorage.getItem('mode') || 'classic';
         this.level = parseInt(localStorage.getItem('level')) || 3;
+        this.obstaclesEnabled = localStorage.getItem('obstaclesEnabled') === 'false' ? false : true; // Default to true (On)
+        
         const storedBaitTimeout = localStorage.getItem('baitTimeout');
         this.baitTimeout = storedBaitTimeout === 'null' ? null : parseInt(storedBaitTimeout) || 8000;
         
@@ -17,24 +19,25 @@ export class SnakeGame {
         this.gameOver = false;
         this.snake = [];
         this.direction = 'RIGHT';
-        this.nextDirection = 'RIGHT'; // For input debouncing
+        this.nextDirection = 'RIGHT';
         this.food = null;
         this.swipeStart = null;
         this.game = null;
         this.speed = 120 - (this.level - 1) * 20; 
         this.gameStarted = false;
         this.gamePaused = false;
-        this.scorePopup = null; // For score pop-up
-        this.obstacles = []; // NEW: Data structure for obstacles
+        this.scorePopup = null; 
+        this.obstacles = [];
 
         // UI elements
         this.wallToggle = controls.wallToggle;
         this.levelSelect = controls.levelSelect;
+        this.obstacleSelect = controls.obstacleSelect; // NEW
         this.baitTimeoutSelect = controls.baitTimeoutSelect;
         this.saveSettingsBtn = controls.saveSettingsBtn;
         this.startRestartBtn = controls.startRestartBtn;
         this.pauseResumeBtn = controls.pauseResumeBtn;
-        // Sound effects
+        
         this.eatSound = document.getElementById('eatSound');
         this.gameOverSound = document.getElementById('gameOverSound');
 
@@ -44,46 +47,62 @@ export class SnakeGame {
         this.drawInitialScreen();
     }
 
-    // --- UI/Settings Methods ---
     initUI() {
         this.wallToggle.textContent = this.mode.charAt(0).toUpperCase() + this.mode.slice(1);
         this.levelSelect.value = this.level.toString();
+        this.obstacleSelect.value = this.obstaclesEnabled ? 'on' : 'off'; // Set UI based on saved val
         this.baitTimeoutSelect.value = this.baitTimeout === null ? 'none' : (this.baitTimeout / 1000).toString();
-        this.updateSaveButtonState(false); // Initially disabled after loading
+        
+        this.updateSaveButtonState(false);
         this.setPauseResumeState(false, false);
         this.startRestartBtn.textContent = 'Start';
         this.updateScore();
     }
+
     attachEvents() {
+        // --- Settings Change Listeners ---
+        const enableSave = () => this.updateSaveButtonState(true);
+
         this.wallToggle.addEventListener('click', () => {
             this.mode = (this.mode === 'classic') ? 'teleport' : 'classic';
             this.wallToggle.textContent = this.mode.charAt(0).toUpperCase() + this.mode.slice(1);
-            this.updateSaveButtonState(true);
+            enableSave();
         });
+        
         this.levelSelect.addEventListener('change', (e) => {
             this.level = parseInt(e.target.value);
-            this.updateSaveButtonState(true);
+            enableSave();
         });
+
+        // NEW: Obstacle Listener
+        this.obstacleSelect.addEventListener('change', (e) => {
+            this.obstaclesEnabled = (e.target.value === 'on');
+            enableSave();
+        });
+
         this.baitTimeoutSelect.addEventListener('change', (e) => {
             let val = e.target.value;
             this.baitTimeout = (val === 'none') ? null : parseInt(val) * 1000;
-            this.updateSaveButtonState(true);
+            enableSave();
         });
         
+        // --- Save Button Logic ---
         this.saveSettingsBtn.addEventListener('click', () => {
             if (this.game) clearInterval(this.game);
             if (this.baitTimer) clearTimeout(this.baitTimer);
 
-            // Save settings to localStorage
+            // Save to localStorage
             localStorage.setItem('mode', this.mode);
             localStorage.setItem('level', this.level);
+            localStorage.setItem('obstaclesEnabled', this.obstaclesEnabled); // Save obstacle pref
             localStorage.setItem('baitTimeout', this.baitTimeout);
 
+            // Reset Game State completely
             this.clearBoard();
             this.snake = [];
             this.food = null;
             this.score = 0;
-            this.obstacles = []; // RESET obstacles
+            this.obstacles = []; 
 
             this.setPauseResumeState(false, false);
             this.gameStarted = false;
@@ -95,37 +114,35 @@ export class SnakeGame {
             this.drawInitialScreen();
         });
         
+        // Game Controls
         this.startRestartBtn.addEventListener('click', () => {
-            if (!this.gameStarted || this.gameOver) {
-                this.start();
-            } else {
-                this.restart(); 
-            }
+            if (!this.gameStarted || this.gameOver) this.start();
+            else this.restart(); 
         });
         this.pauseResumeBtn.addEventListener('click', () => {
             if (!this.gameStarted || this.gameOver) return;
-            if (this.gamePaused) {
-                this.resume();
-            } else {
-                this.pause();
-            }
+            if (this.gamePaused) this.resume();
+            else this.pause();
         });
         
+        // Touch/Key Listeners
         if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-            this.canvas.addEventListener('touchstart', (e) => this.touchStartHandler(e));
-            this.canvas.addEventListener('touchend', (e) => this.touchEndHandler(e));
+            this.canvas.addEventListener('touchstart', (e) => this.touchStartHandler(e), { passive: false });
+            this.canvas.addEventListener('touchend', (e) => this.touchEndHandler(e), { passive: false });
+            this.canvas.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
         } else {
             document.addEventListener('keydown', (e) => this.directionControl(e));
         }
         window.addEventListener('resize', () => this.resizeCanvas());
-        window.dispatchEvent(new Event('resize'));
     }
+
     updateSaveButtonState(enabled = true) {
         this.saveSettingsBtn.style.opacity = enabled ? '1' : '0.5';
         this.saveSettingsBtn.style.pointerEvents = enabled ? 'auto' : 'none';
+        if(enabled) this.saveSettingsBtn.textContent = "Save*";
+        else this.saveSettingsBtn.textContent = "Save";
     }
     
-    // --- Helper Methods ---
     setPauseResumeState(enabled, paused) {
         this.pauseResumeBtn.disabled = !enabled;
         this.pauseResumeBtn.textContent = paused ? 'Resume' : 'Pause';
@@ -164,40 +181,43 @@ export class SnakeGame {
         this.game = setInterval(() => this.draw(), this.speed);
         this.resetBaitTimer();
     }
-    // --- Game Logic Methods ---
+
     initGame() {
         this.snake = [{ x: 9 * this.box, y: 10 * this.box }];
         this.direction = 'RIGHT';
-        this.nextDirection = 'RIGHT'; // Reset input buffer
+        this.nextDirection = 'RIGHT'; 
         this.score = 0;
         this.gameOver = false;
         this.gamePaused = false;
-        this.obstacles = []; // Ensure obstacles are clear on init
+        this.obstacles = []; // Clear obstacles
         this.updateScore();
         clearInterval(this.game);
         clearTimeout(this.baitTimer);
 
+        // Recalculate speed based on Level setting
         this.speed = 120 - (this.level - 1) * 20; 
         
         this.game = setInterval(() => this.draw(), this.speed);
         this.placeFood();
     }
     
-    // NEW: Obstacle generation logic
     generateObstacles() {
-        // Clear previous obstacles
-        this.obstacles = []; 
+        // CHECK SETTING: If obstacles are disabled, do nothing
+        if (!this.obstaclesEnabled) return; 
 
-        // Add 5 obstacles for every 10 points scored (e.g., at score 10, 20, 30...)
+        this.obstacles = []; 
         const numObstacles = Math.floor(this.score / 10) * 5; 
         
         for (let i = 0; i < numObstacles; i++) {
             let newObstacle;
+            let attempts = 0;
             do {
                 newObstacle = {
                     x: Math.floor(Math.random() * this.gridSize) * this.box,
                     y: Math.floor(Math.random() * this.gridSize) * this.box
                 };
+                attempts++;
+                if(attempts > 50) break;
             } while (this.collision(newObstacle, this.snake) || this.collision(newObstacle, [this.food]) || this.collision(newObstacle, this.obstacles));
             
             this.obstacles.push(newObstacle);
@@ -206,7 +226,6 @@ export class SnakeGame {
     
     placeFood() {
         let newFood;
-        // Check collision against snake, obstacles, and the current food location
         do {
             newFood = {
                 x: Math.floor(Math.random() * this.gridSize) * this.box,
@@ -216,6 +235,7 @@ export class SnakeGame {
         this.food = newFood;
         this.resetBaitTimer();
     }
+
     resetBaitTimer() {
         if (this.baitTimer) clearTimeout(this.baitTimer);
         if (this.baitTimeout) {
@@ -225,33 +245,31 @@ export class SnakeGame {
         }
     }
 
-    // --- Input Control with Debouncing ---
     directionControl(event) {
         if (this.gameOver || this.gamePaused) return;
         let newDir = this.direction;
-        if (event.keyCode == 37 && this.direction != 'RIGHT') {
-            newDir = 'LEFT';
-        } else if (event.keyCode == 38 && this.direction != 'DOWN') {
-            newDir = 'UP';
-        } else if (event.keyCode == 39 && this.direction != 'LEFT') {
-            newDir = 'RIGHT';
-        } else if (event.keyCode == 40 && this.direction != 'UP') {
-            newDir = 'DOWN';
-        }
+        if (event.keyCode == 37 && this.direction != 'RIGHT') newDir = 'LEFT';
+        else if (event.keyCode == 38 && this.direction != 'DOWN') newDir = 'UP';
+        else if (event.keyCode == 39 && this.direction != 'LEFT') newDir = 'RIGHT';
+        else if (event.keyCode == 40 && this.direction != 'UP') newDir = 'DOWN';
         this.nextDirection = newDir;
     }
     
     touchStartHandler(event) {
+        event.preventDefault();
         this.swipeStart = event.touches[0];
     }
+
     touchEndHandler(event) {
+        event.preventDefault();
         if (!this.swipeStart || this.gameOver || this.gamePaused) return;
         const swipeEnd = event.changedTouches[0];
         const dx = swipeEnd.pageX - this.swipeStart.pageX;
         const dy = swipeEnd.pageY - this.swipeStart.pageY;
         
         let newDir = this.nextDirection;
-        
+        if(Math.abs(dx) < 10 && Math.abs(dy) < 10) return; // Tap threshold
+
         if (Math.abs(dx) > Math.abs(dy)) {
             if (dx > 0 && this.direction !== 'LEFT') newDir = 'RIGHT';
             if (dx < 0 && this.direction !== 'RIGHT') newDir = 'LEFT';
@@ -263,11 +281,9 @@ export class SnakeGame {
         this.swipeStart = null;
     }
 
-    // --- Drawing Methods ---
     drawGrid() {
         this.ctx.strokeStyle = '#ccc'; 
         this.ctx.lineWidth = 0.5;
-
         for (let x = 0; x <= this.canvas.width; x += this.box) {
             this.ctx.beginPath();
             this.ctx.moveTo(x + 0.5, 0); 
@@ -282,6 +298,7 @@ export class SnakeGame {
         }
         this.ctx.lineWidth = 1; 
     }
+
     drawOverlay(text) {
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -290,40 +307,40 @@ export class SnakeGame {
         this.ctx.textAlign = 'center';
         this.ctx.fillText(text, this.canvas.width / 2, this.canvas.height / 2);
     }
+
     drawInitialScreen() {
         this.ctx.fillStyle = '#333';
         this.ctx.font = 'bold 30px Arial';
         this.ctx.textAlign = 'center';
         this.ctx.fillText('Press START to begin!', this.canvas.width / 2, this.canvas.height / 2);
     }
+
     drawScorePopup() {
         if (!this.scorePopup) return;
         const { x, y, opacity } = this.scorePopup;
-        
         this.ctx.fillStyle = `rgba(0, 255, 0, ${opacity})`;
         this.ctx.font = 'bold 24px Arial';
         this.ctx.textAlign = 'center';
         this.ctx.fillText('+1', x + this.box / 2, y);
-
         this.scorePopup.y -= 2; 
         this.scorePopup.opacity -= 0.05;
-
-        if (this.scorePopup.opacity <= 0) {
-            this.scorePopup = null;
-        }
+        if (this.scorePopup.opacity <= 0) this.scorePopup = null;
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawGrid(); 
 
-        // Apply debounced direction change
         this.direction = this.nextDirection;
         
-        // Draw Obstacles
-        this.ctx.fillStyle = '#333'; // Dark grey for obstacles
-        for (let i = 0; i < this.obstacles.length; i++) {
-            this.ctx.fillRect(this.obstacles[i].x, this.obstacles[i].y, this.box, this.box);
+        // Draw Obstacles (Only if array has items)
+        if (this.obstaclesEnabled) {
+             this.ctx.fillStyle = '#2c3e50'; 
+             for (let i = 0; i < this.obstacles.length; i++) {
+                 this.ctx.fillRect(this.obstacles[i].x, this.obstacles[i].y, this.box, this.box);
+                 this.ctx.strokeStyle = '#fff';
+                 this.ctx.strokeRect(this.obstacles[i].x, this.obstacles[i].y, this.box, this.box);
+             }
         }
 
         // Draw Snake
@@ -339,7 +356,6 @@ export class SnakeGame {
         let snakeX = this.snake[0].x;
         let snakeY = this.snake[0].y;
         
-        // Calculate new head position
         if (this.direction === 'LEFT') snakeX -= this.box;
         else if (this.direction === 'UP') snakeY -= this.box;
         else if (this.direction === 'RIGHT') snakeX += this.box;
@@ -353,8 +369,8 @@ export class SnakeGame {
             this.updateScore();
             this.scorePopup = { x: this.food.x, y: this.food.y, opacity: 1.0 };
             
-            // Check if it's time to add or remove obstacles
-            if (this.score % 10 === 0) {
+            // Check Setting AND Score to generate obstacles
+            if (this.obstaclesEnabled && this.score % 10 === 0) {
                 this.generateObstacles();
             }
             this.placeFood();
@@ -364,10 +380,10 @@ export class SnakeGame {
                 this.eatSound.play();
             }
         } else {
-            this.snake.pop(); // Remove tail if no food eaten
+            this.snake.pop(); 
         }
         
-        // Wall/Teleport Logic applied to newHead
+        // Wall/Teleport Logic
         if (this.mode === 'teleport') {
             if (newHead.x < 0) newHead.x = this.canvas.width - this.box;
             else if (newHead.x >= this.canvas.width) newHead.x = 0;
@@ -378,16 +394,16 @@ export class SnakeGame {
             return;
         }
         
-        this.snake.unshift(newHead); // Add new head
+        this.snake.unshift(newHead);
 
-        // Self-collision check
+        // Self-collision
         if (this.collision(newHead, this.snake.slice(1))) {
             this.endGame();
             return;
         }
         
-        // NEW: Obstacle collision check
-        if (this.collision(newHead, this.obstacles)) {
+        // Obstacle collision (Only check if enabled)
+        if (this.obstaclesEnabled && this.collision(newHead, this.obstacles)) {
             this.endGame();
             return;
         }
@@ -400,6 +416,7 @@ export class SnakeGame {
     }
     
     collision(head, array) {
+        if (!array) return false;
         for (let i = 0; i < array.length; i++) {
             if (head.x === array[i].x && head.y === array[i].y) {
                 return true;

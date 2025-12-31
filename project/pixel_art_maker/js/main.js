@@ -18,10 +18,10 @@ const heightDec = document.getElementById('heightDec');
 const heightInc = document.getElementById('heightInc');
 
 // --- STATE ---
-const MAX_CANVAS_DISPLAY = 512; // Max width or height in pixels
+const MAX_CANVAS_DISPLAY = 512; 
 let gridW = 16;
 let gridH = 16;
-let pixelSize = 0; // Calculated dynamically
+let pixelSize = 0; 
 let isDrawing = false;
 let isErasing = false;
 let showGrid = false;
@@ -29,27 +29,46 @@ let pixelData = {}; // Key: "x-y", Value: hex
 
 // --- INITIALIZATION ---
 function init() {
-    updateCanvasDimensions();
-    // Default listeners for tools are handled below
+    loadFromLocal(); // Load saved session
+    updateCanvasDimensions(false); // Initialize without wiping loaded data
+}
+
+// --- PERSISTENCE ---
+function saveToLocal() {
+    const session = { gridW, gridH, pixelData };
+    localStorage.setItem('pixelStudio_save', JSON.stringify(session));
+}
+
+function loadFromLocal() {
+    const saved = localStorage.getItem('pixelStudio_save');
+    if (saved) {
+        const data = JSON.parse(saved);
+        gridW = data.gridW || 16;
+        gridH = data.gridH || 16;
+        pixelData = data.pixelData || {};
+        widthInput.value = gridW;
+        heightInput.value = gridH;
+    }
 }
 
 // --- CORE LOGIC ---
 
-// 1. Calculate Canvas Size & Pixel Size
-function updateCanvasDimensions() {
-    // Select pixel size based on the largest dimension to fill the 512px space
+// Updates canvas resolution and pixel scale
+function updateCanvasDimensions(shouldClear = true) {
     const largerDim = Math.max(gridW, gridH);
     pixelSize = Math.floor(MAX_CANVAS_DISPLAY / largerDim);
     
     canvas.width = gridW * pixelSize;
     canvas.height = gridH * pixelSize;
 
-    // To Decide later: Reset pixel data if dimensions change? 
-    pixelData = {}; 
+    if (shouldClear) {
+        pixelData = {}; 
+        localStorage.removeItem('pixelStudio_save');
+    }
     render();
 }
 
-// 2. Render Function
+// Main Draw Loop
 function render() {
     // Clear background
     ctx.fillStyle = '#ffffff';
@@ -87,7 +106,7 @@ function render() {
     }
 }
 
-// 3. Mouse Coordinate Helper
+// Map screen coordinates to grid coordinates
 function getMousePos(evt) {
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
@@ -100,6 +119,7 @@ function getMousePos(evt) {
     return { x, y };
 }
 
+// Handles drawing and erasing input
 function handleInput(e) {
     if (!isDrawing) return;
     
@@ -114,27 +134,37 @@ function handleInput(e) {
     
     if (pixelData[key] !== color) {
         pixelData[key] = color;
-        render(); 
+        render();
+        saveToLocal();
     }
 }
 
 // --- EVENT LISTENERS ---
 
-// Canvas Interactions
+// Mouse Events
 canvas.addEventListener('mousedown', (e) => { isDrawing = true; handleInput(e); });
 canvas.addEventListener('mousemove', handleInput);
 window.addEventListener('mouseup', () => isDrawing = false);
 canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 
-// Stepper Logic Helper
+// Keyboard Shortcuts
+window.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 'b') modeDrawBtn.click();
+    if (e.key.toLowerCase() === 'e') modeEraseBtn.click();
+    if (e.key.toLowerCase() === 'g') toggleGridBtn.click();
+});
+
+// Dimension Steppers
 function updateDim(input, change, isWidth) {
     let val = parseInt(input.value);
     const newVal = val + change;
     if (newVal >= 4 && newVal <= 64) {
-        input.value = newVal;
-        if (isWidth) gridW = newVal;
-        else gridH = newVal;
-        updateCanvasDimensions();
+        if(confirm("Changing dimensions will clear current art. Proceed?")) {
+            input.value = newVal;
+            if (isWidth) gridW = newVal;
+            else gridH = newVal;
+            updateCanvasDimensions(true);
+        }
     }
 }
 
@@ -144,8 +174,14 @@ widthInc.addEventListener('click', () => updateDim(widthInput, 4, true));
 heightDec.addEventListener('click', () => updateDim(heightInput, -4, false));
 heightInc.addEventListener('click', () => updateDim(heightInput, 4, false));
 
-// Tools
-clearBtn.addEventListener('click', () => { pixelData = {}; render(); });
+// Tool Controls
+clearBtn.addEventListener('click', () => { 
+    if(confirm("Clear canvas?")) {
+        pixelData = {}; 
+        localStorage.removeItem('pixelStudio_save');
+        render(); 
+    }
+});
 
 modeDrawBtn.addEventListener('click', () => { 
     isErasing = false; 
@@ -165,12 +201,11 @@ toggleGridBtn.addEventListener('click', () => {
     render(); 
 });
 
-// Download
+// File Export
 downloadBtn.addEventListener('click', () => {
     const prevGrid = showGrid;
     showGrid = false;
     render();
-    
     const link = document.createElement('a');
     link.download = `pixel-art-${gridW}x${gridH}.png`;
     link.href = canvas.toDataURL('image/png');

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Art Studio</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <aside class="controls">
+            <h1>Pixel Studio</h1>
+            
+            <div class="control-group">
+                <label>Canvas Dimensions</label>
+                <div class="dimensions-row">
+                    
+                    <div class="dim-col">
+                        <span class="dim-label">Width</span>
+                        <div class="number-control">
+                            <button class="step-btn" id="widthDec">−</button>
+                            <input type="number" id="widthInput" value="16" min="4" max="64" readonly>
+                            <button class="step-btn" id="widthInc">+</button>
+                        </div>
+                    </div>
+
+                    <div class="dim-col">
+                        <span class="dim-label">Height</span>
+                        <div class="number-control">
+                            <button class="step-btn" id="heightDec">−</button>
+                            <input type="number" id="heightInput" value="16" min="4" max="64" readonly>
+                            <button class="step-btn" id="heightInc">+</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Color</label>
+                <input type="color" id="colorPicker" value="#38bdf8">
+            </div>
+
+            <div class="control-group tools">
+                <button id="modeDraw" class="tool-btn active">✏️ Draw</button>
+                <button id="modeErase" class="tool-btn">🧽 Erase</button>
+            </div>
+
+            <div class="actions">
+                <button id="toggleGrid">Toggle Grid Lines</button>
+                <button id="clearBtn" class="danger-btn">Clear Canvas</button>
+                <button id="downloadBtn" class="success-btn">💾 Download</button>
+            </div>
+        </aside>
+
+        <main class="workspace">
+            <canvas id="artCanvas"></canvas>
+            <p class="hint">Left Click to Draw • Right Click to Erase</p>
+        </main>
+    </div>
+
+    <script type="module" src="./js/main.js"></script>
+</body>
+</html>

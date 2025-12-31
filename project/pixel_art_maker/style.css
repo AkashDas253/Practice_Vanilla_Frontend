@@ -1,0 +1,236 @@
+:root {
+    /* Color Palette - Modern Slate/Cyan */
+    --bg-color: #0f172a;
+    --panel-color: #1e293b;
+    --text-main: #f8fafc;
+    --text-dim: #94a3b8;
+    --accent: #38bdf8;
+    --danger: #ef4444;
+    --success: #10b981;
+    --border-color: #334155;
+    
+    /* Layout Constants */
+    --radius: 8px;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
+
+/* Global Resets */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg-color);
+    background-image: radial-gradient(circle at top right, #1e293b, #0f172a);
+    color: var(--text-main);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Main App Layout */
+.app-container {
+    display: flex;
+    background: var(--panel-color);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    width: 1000px;
+    height: 700px;
+    max-width: 95vw;
+    max-height: 90vh;
+}
+
+/* Sidebar Styling */
+.controls {
+    width: 300px;
+    padding: 24px;
+    background: rgba(15, 23, 42, 0.3);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow-y: auto;
+}
+
+h1 { 
+    font-size: 1.25rem; 
+    font-weight: 800;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    margin-bottom: 5px;
+}
+
+.control-group label { 
+    display: block; 
+    margin-bottom: 8px; 
+    font-size: 0.7rem; 
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Custom Number Controls (Width/Height) */
+.dimensions-row {
+    display: flex;
+    gap: 12px;
+}
+
+.dim-col {
+    flex: 1;
+}
+
+.dim-label {
+    display: block;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.number-control {
+    display: flex;
+    align-items: center;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+/* Hide Default Arrows */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    width: 100%;
+    border: none;
+    background: transparent;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    padding: 8px 0;
+    outline: none;
+}
+
+.step-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    padding: 8px 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.2s;
+}
+
+.step-btn:hover {
+    color: var(--accent);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Color Picker Styling */
+input[type="color"] { 
+    -webkit-appearance: none;
+    border: none;
+    width: 100%;
+    height: 45px;
+    cursor: pointer;
+    background: transparent;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border-radius: var(--radius);
+    border: 2px solid var(--border-color);
+}
+
+/* Tool Buttons & Actions */
+.tools { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    cursor: pointer;
+    background: var(--bg-color);
+    color: var(--text-main);
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background: var(--accent);
+    color: var(--bg-color);
+    border-color: var(--accent);
+}
+
+button.active {
+    background: var(--accent);
+    color: var(--bg-color);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto; /* Push to bottom of sidebar */
+}
+
+.danger-btn { border-color: #7f1d1d; }
+.danger-btn:hover { background: var(--danger); border-color: var(--danger); color: white; }
+
+.success-btn { background: var(--success); color: white; border: none; }
+.success-btn:hover { opacity: 0.9; transform: scale(1.02); background: var(--success); color: white; }
+
+/* Workspace (Canvas Area) */
+.workspace {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #111827;
+    /* CSS Checkerboard Pattern for transparency feel */
+    background-image: 
+        linear-gradient(45deg, #16213e 25%, transparent 25%), 
+        linear-gradient(-45deg, #16213e 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #16213e 75%), 
+        linear-gradient(-45deg, transparent 75%, #16213e 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    padding: 40px;
+}
+
+canvas {
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    image-rendering: pixelated; /* Crucial for keeping pixel art sharp */
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.hint { 
+    margin-top: 20px; 
+    color: var(--text-dim); 
+    font-size: 0.75rem;
+    background: rgba(0,0,0,0.5);
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+}

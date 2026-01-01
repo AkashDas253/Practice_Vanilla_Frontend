@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mermaid-MD Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:,">
+</head>
+<body>
+
+    <header>
+        <div class="brand">Mermaid-MD Pro</div>
+        <div class="toolbar">
+            <button onclick="insertSnippet('## ')">H2</button>
+            <button onclick="insertSnippet('**bold**')">Bold</button>
+            <button onclick="insertSnippet('\n```mermaid\ngraph TD\n    A[Start] --> B(End)\n```\n')">Flowchart</button>
+            <button onclick="insertSnippet('\n```mermaid\nsequenceDiagram\n    Alice->>Bob: Hello\n```\n')">Sequence</button>
+            <select id="theme-switcher">
+                <option value="default">Default Theme</option>
+                <option value="dark">Dark Theme</option>
+                <option value="forest">Forest Theme</option>
+                <option value="neutral">Neutral Theme</option>
+            </select>
+            <button id="copy-html-btn" class="action-btn">Copy HTML</button>
+            <button id="download-btn" class="action-btn">Download .md</button>
+            <button id="print-btn" class="action-btn">Print to PDF</button>
+        </div>
+    </header>
+
+    <div class="workspace">
+        <textarea id="editor" placeholder="# Start typing Markdown or Mermaid code..."></textarea>
+        <div id="resizer"></div>
+        <div id="preview-pane"></div>
+    </div>
+
+    <div id="toc-sidebar" class="toc-sidebar">
+        <div class="toc-header">
+            <span>Table of Contents</span>
+            <button onclick="toggleTOC()" style="background:none; border:none; color:white; font-size:20px; cursor:pointer;">&times;</button>
+        </div>
+        <div id="toc-content"></div>
+    </div>
+
+    <button id="toc-open-btn" onclick="toggleTOC()">☰ Contents</button>
+
+    <div class="status-bar">
+        <div class="status-item">Words: <span id="word-count">0</span></div>
+        <div class="status-item">Diagrams: <span id="diagram-count">0</span></div>
+        <div class="status-item" id="save-indicator">Saved</div>
+    </div>
+
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        window.mermaid = mermaid;
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+.btn-glow {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 6px;
+    font-size: 1em;
+    box-shadow: 0 0 0 rgba(25, 118, 210, 0.7);
+    transition: box-shadow 0.3s;
+}
+.btn-glow:hover {
+    box-shadow: 0 0 16px 4px rgba(25, 118, 210, 0.7);
+}

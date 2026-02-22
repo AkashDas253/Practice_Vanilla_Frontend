@@ -1,0 +1,9 @@
+.img-border {
+    position: relative;
+    transition: box-shadow 0.4s, border-color 0.4s;
+    border: 2px solid transparent;
+}
+.img-border:hover {
+    border-color: #1976d2;
+    box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.15);
+}

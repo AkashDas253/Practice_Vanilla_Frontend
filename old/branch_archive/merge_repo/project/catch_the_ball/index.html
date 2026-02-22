@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch the Box Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Catch the Moving Box</h1>
+    <p>Score: <span id="score">0</span></p>
+    <p>High Score: <span id="highScore">0</span></p>
+    <p>Time Left: <span id="timer">30</span> sec</p>
+
+    <div>
+        <label for="difficulty">Difficulty:</label>
+        <select id="difficulty">
+            <option value="1000">Easy</option>
+            <option value="700">Medium</option>
+            <option value="400">Hard</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="timeLimit">Time Limit (Seconds):</label>
+        <input type="number" id="timeLimit" min="30" max="600" value="30">
+    </div>
+
+    <div style="display: flex; justify-content: center; gap: 10px;">
+        <button id="startButton" onclick="toggleGame()">Start</button>
+        <button id="pauseButton" onclick="togglePause()">⏸</button>
+        <button id="toggleSoundButton" onclick="toggleSound()">🔊</button>
+        <button id="restartButton" onclick="restartGame()">Restart</button>
+    </div>
+
+    <div id="gameArea">
+        <div id="box"></div>
+        <div id="gameOverModal" class="modal">
+            <div class="modal-content">
+                <h2>Game Over!</h2>
+                <p id="finalScoreText">Your final score is: <span id="finalScore">0</span></p>
+                <button onclick="restartGame()">Replay</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="clickSound" src="click_sound.mp3"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>

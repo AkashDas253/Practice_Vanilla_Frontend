@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Game Configuration -->
+    <div id="config">
+        <h2>Configure Your Game</h2>
+
+        <!-- Grid Size Selection -->
+        <label for="grid-size">Grid Size:</label>
+        <select id="grid-size">
+            <option value="3">3x3</option>
+            <option value="5">5x5</option>
+        </select>
+        <br>
+
+        <!-- Game Type Selection -->
+        <label for="game-type">Game Type:</label>
+        <select id="game-type" onchange="toggleBotOptions()">
+            <option value="1v1">1 vs 1</option>
+            <option value="1vBot">1 vs Bot</option>
+        </select>
+        <br>
+
+        <!-- Bot Type Selection -->
+        <div id="bot-options" style="display: none;">
+            <label for="bot-type">Bot Type:</label>
+            <select id="bot-type">
+                <option value="easyBot">Easy Bot</option>
+                <option value="minimaxBot">Minimax Bot</option>
+                <option value="alphaBetaBot" >Alpha-Beta Bot</option>
+            </select>
+            <br>
+
+            <!-- First Player Toggle -->
+            <label for="first-player">First Player:</label>
+            <select id="first-player">
+                <option value="player">Player</option>
+                <option value="bot">Bot</option>
+            </select>
+            <br>
+        </div>
+
+        <!-- Start Game Button -->
+        <button onclick="startGame()">Start Game</button>
+    </div>
+
+    <!-- Game Board -->
+    <div id="game" style="display: none;">
+        <h2>Tic-Tac-Toe</h2>
+        <div id="board"></div>
+        <button onclick="resetGame()">Play Again</button>
+        <button onclick="newGame()">New Game</button>
+    </div>
+
+    <!-- <script src="easyBot.js"></script>
+    <script src="minimaxBot.js"></script>
+    <script src="alphaBetaBot.js"></script> -->
+
+    <script src="player.js"></script>
+    <script src="humanPlayer.js"></script>
+    <script src="randomBot.js"></script>
+    <script src="minimaxBot.js"></script>
+    <script src="alphaBetaBot.js"></script>
+
+    <script src="game.js"></script>
+</body>
+</html>

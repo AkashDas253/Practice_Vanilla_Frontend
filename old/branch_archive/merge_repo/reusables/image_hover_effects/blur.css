@@ -1,0 +1,6 @@
+.img-blur {
+    transition: filter 0.4s;
+}
+.img-blur:hover {
+    filter: blur(2px) brightness(1.1);
+}

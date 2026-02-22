@@ -1,0 +1,7 @@
+.img-radiusmorph {
+    border-radius: 8px;
+    transition: border-radius 0.4s;
+}
+.img-radiusmorph:hover {
+    border-radius: 32px;
+}

@@ -1,0 +1,10 @@
+/* Rotate effect for links on hover */
+.link-rotate {
+    color: #1976d2;
+    text-decoration: none;
+    transition: transform 0.3s;
+    display: inline-block;
+}
+.link-rotate:hover {
+    transform: rotate(-8deg);
+}

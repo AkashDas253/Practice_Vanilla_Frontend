@@ -1,0 +1,6 @@
+.img-scaleupdown {
+    transition: transform 0.4s;
+}
+.img-scaleupdown:hover {
+    transform: scale(1.18) skewY(2deg);
+}

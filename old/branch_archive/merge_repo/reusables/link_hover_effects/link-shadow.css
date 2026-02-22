@@ -1,0 +1,9 @@
+/* Shadow effect for links on hover */
+.link-shadow {
+    color: #1976d2;
+    text-decoration: none;
+    transition: box-shadow 0.3s;
+}
+.link-shadow:hover {
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.25);
+}

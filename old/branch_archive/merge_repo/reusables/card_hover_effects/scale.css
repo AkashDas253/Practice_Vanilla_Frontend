@@ -1,0 +1,9 @@
+.card-scale {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    transition: transform 0.3s;
+}
+.card-scale:hover {
+    transform: scale(1.05);
+}

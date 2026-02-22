@@ -1,0 +1,9 @@
+/* Color fade effect for links */
+.link-colorfade {
+    color: #1976d2;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.link-colorfade:hover {
+    color: #388e3c;
+}

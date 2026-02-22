@@ -1,0 +1,39 @@
+.btn-flip {
+    background: #fff;
+    color: #1976d2;
+    border: 2px solid #1976d2;
+    padding: 24px 64px;
+    border-radius: 8px;
+    font-size: 1.25em;
+    perspective: 400px;
+    transition: color 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+.btn-flip-inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+.btn-flip:hover .btn-flip-inner {
+    transform: rotateY(180deg);
+}
+.btn-flip-front, .btn-flip-back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    width: 100%; height: 100%;
+    text-align: center;
+    font-size: 1.25em;
+    font-weight: 600;
+}
+.btn-flip-back {
+    transform: rotateY(180deg);
+    color: #e53935;
+}

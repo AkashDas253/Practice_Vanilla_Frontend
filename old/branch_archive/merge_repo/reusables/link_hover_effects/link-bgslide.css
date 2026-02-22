@@ -1,0 +1,23 @@
+/* Background highlight sliding in from left/right */
+.link-bgslide {
+    position: relative;
+    color: #1976d2;
+    text-decoration: none;
+    overflow: hidden;
+    z-index: 1;
+}
+.link-bgslide::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #e3f2fd;
+    z-index: -1;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+.link-bgslide:hover::before {
+    transform: translateX(0);
+}

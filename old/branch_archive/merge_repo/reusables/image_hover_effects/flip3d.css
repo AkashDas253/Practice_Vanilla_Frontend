@@ -1,0 +1,7 @@
+.img-flip3d {
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+.img-flip3d:hover {
+    transform: rotateY(180deg);
+}

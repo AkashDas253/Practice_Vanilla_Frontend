@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Hover Effects Demo</title>
+    <link rel="stylesheet" href="shadow.css">
+    <link rel="stylesheet" href="scale.css">
+    <link rel="stylesheet" href="border.css">
+    <link rel="stylesheet" href="liftglow.css">
+    <link rel="stylesheet" href="rotate.css">
+    <link rel="stylesheet" href="contentreveal.css">
+    <link rel="stylesheet" href="blur.css">
+    <link rel="stylesheet" href="flip3d.css">
+    <link rel="stylesheet" href="contentrotate.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 32px 24px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 24px;
+        }
+        .demo-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 32px;
+            align-items: stretch;
+            justify-items: center;
+        }
+        .demo-cards > div {
+            margin-bottom: 8px;
+        }
+        .card {
+            min-height: 120px;
+            padding: 24px 16px;
+            font-size: 1.1em;
+            color: #1976d2;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+            transition: all 0.3s;
+        }
+        .card-extra {
+            color: #388e3c;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Card Hover Effects Demo</h1>
+        <div class="demo-cards">
+            <div class="card card-shadow">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Card Image" style="width:100%;height:120px;object-fit:cover;border-radius:8px;">
+                <h2>Shadow Elevation</h2>
+                <p>This card's shadow grows on hover, making it pop out from the background.</p>
+            </div>
+            <div class="card card-scale">
+                <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Card Image" style="width:100%;height:120px;object-fit:cover;border-radius:8px;">
+                <h2>Scale Up</h2>
+                <p>This card gently grows in size when hovered, drawing attention.</p>
+            </div>
+            <div class="card card-border">
+                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Card Image" style="width:100%;height:120px;object-fit:cover;border-radius:8px;">
+                <h2>Border Color Change</h2>
+                <p>The border color of this card changes on hover for a subtle effect.</p>
+            </div>
+            <div class="card card-liftglow">
+                <img src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=400&q=80" alt="Card Image" style="width:100%;height:120px;object-fit:cover;border-radius:8px;">
+                <h2>Lift & Glow</h2>
+                <p>This card lifts and glows when hovered, creating a dynamic look.</p>
+            </div>
+            <div class="card card-rotate">
+                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Card Image" style="width:100%;height:120px;object-fit:cover;border-radius:8px;">
+                <h2>Rotate</h2>
+                <p>The card rotates slightly on hover for a playful effect.</p>
+            </div>
+            <div class="card card-blur">
+                <div class="card-blur-imgwrap">
+                    <img src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=400&q=80" alt="Card Image">
+                </div>
+                <h2>Blur</h2>
+                <p>This card blurs its image on hover for a soft focus effect.</p>
+            </div>
+            <div class="card card-flip3d">
+                <div class="flip3d-inner" style="width:100%;">
+                    <div class="flip3d-front">
+                        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Card Image" style="width:100%;height:120px;object-fit:cover;border-radius:8px;">
+                        <h2 style="margin:12px 0 8px 0;font-size:1.15em;">Flip 3D</h2>
+                        <p style="margin:0 0 0 0;font-size:0.98em;color:#1976d2;text-align:center;">Hover to flip and see more details!</p>
+                    </div>
+                    <div class="flip3d-back">
+                        <h2 style="margin:0 0 8px 0;font-size:1.1em;">Back Side</h2>
+                        <p style="margin:0;font-size:0.98em;text-align:center;">This is the back of the card. You can put extra info, links, or actions here.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-content-rotate">
+                <div class="card-content-rotate-inner">
+                    <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Card Image" style="width:100%;height:120px;object-fit:cover;border-radius:8px;">
+                    <h2 style="margin:12px 0 8px 0;font-size:1.15em;">Rotate Content</h2>
+                    <p style="margin:0 0 0 0;font-size:0.98em;color:#1976d2;text-align:center;">Only the content rotates on hover, the card box stays fixed.</p>
+                </div>
+            </div>
+            <div class="card card-contentreveal">
+                <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Card Image" style="width:100%;height:120px;object-fit:cover;border-radius:8px;">
+                <h2>Content Reveal</h2>
+                <p>Hover to reveal extra content below!</p>
+                <div class="card-extra">This extra content slides up or fades in on hover.</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

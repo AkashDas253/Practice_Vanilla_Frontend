@@ -2,13 +2,13 @@
 # Practice Vanilla Frontend
 
 ### Implementation
-- [Reusable Components](./reusables/readme.md)
+- [Reusable Components](./reusables/)
 
 ### Mini projects
-- [Catch the Ball](./project/catch_the_ball/readme.md)
-- [Swipe Snake](./project/swipe_snake/readme.md)
-- [Weather App](./project/weather_app/README.md)
-- [Real Time World Clock](./project/real_time_world_clock/readme.md)
-- [Financial Calculator Tool](./project/financial_calculator_tool/readme.md)
-- [Pixel Art Maker](./project/pixel_art_maker/readme.md)
-- [Markdown Viewer](./project/markdown_viewer/readme.md)
+- [Catch the Ball](./project/catch_the_ball/)
+- [Swipe Snake](./project/swipe_snake/)
+- [Weather App](./project/weather_app/)
+- [Real Time World Clock](./project/real_time_world_clock/)
+- [Financial Calculator Tool](./project/financial_calculator_tool/)
+- [Pixel Art Maker](./project/pixel_art_maker/)
+- [Markdown Viewer](./project/markdown_viewer/)

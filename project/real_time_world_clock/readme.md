@@ -1,41 +1,37 @@
-## Global Time Converter
+
+## Global Time Zone Converter
 
 ### Overview
 
-This is a clean, fast, and fully responsive Single-Page Application (SPA) designed to help users instantly convert time between any two global time zones. Built using Vanilla JavaScript and Tailwind CSS, it leverages a public API to ensure real-time accuracy and robust network handling.
+This is a clean, fast, and fully responsive Single-Page Application (SPA) designed to help users instantly convert time between any two global time zones. Built using **Vanilla JavaScript** and **Tailwind CSS**, it leverages native browser APIs to provide high-fidelity time data with zero external dependencies.
 
 It’s the perfect tool for coordinating remote team meetings, scheduling international calls, or simply checking the time for family and friends across the globe.
 
 ### Features
 
-- Real-Time Clock: Both the source and target time displays update every single second.
-
-- Time Zone Conversion: Easily select from a comprehensive list of over 400 time zones (organized by continent/region).
-
-Time Difference Calculation: Automatically calculates and displays the exact time difference (e.g., "+5 hours and 30 minutes") between the two selected zones.
-
-- Responsive Design: Fully optimized layout for seamless use on mobile phones, tablets, and desktop screens.
-
-- Robust Networking: Implements an exponential backoff retry mechanism to gracefully handle temporary API downtime or network interruptions.
+* **Real-Time Clock:** High-precision clocks for both origin and destination that update every second.
+* **Bookmarkable Links:** Automatically updates the URL query strings (`?s=...&t=...`) so you can bookmark specific conversions or share them with others.
+* **Theme Toggle:** Built-in Dark and Light modes that persist via `localStorage` and respect system preferences.
+* **Adaptive Layout:** A "direction-aware" swap button that changes its icon based on whether the layout is stacked (mobile) or side-by-side (desktop).
+* **Time Difference Calculation:** Automatically calculates the exact offset between zones, handling unique half-hour and 45-minute offsets (e.g., "+5h 30m Ahead").
+* **Offline First:** Uses the `Intl.DateTimeFormat` engine, meaning the app works perfectly without an internet connection once loaded.
 
 ### Technology Stack
 
-- Frontend: HTML5, Vanilla JavaScript (ES6+), and CSS
-
-- Styling: Tailwind CSS (loaded via CDN for simplicity)
-
-- Data Source: World Time API (worldtimeapi.org)
+* **Frontend:** HTML5, Vanilla JavaScript (ES6+).
+* **Styling:** Tailwind CSS (configured for `class` based dark mode).
+* **Time Engine:** Native Browser `Intl` API (no external API calls required, ensuring 100% uptime).
 
 ## How to Run Locally
 
-Since this application is a single, self-contained HTML file, running it couldn't be simpler:
+Since this application consists of self-contained files, running it is simple:
 
-Save the provided code as a file named index.html.
-
-Open index.html directly in any modern web browser (Chrome, Firefox, Edge, Safari).
-
-No server, dependencies, or build process is required!
+1. Save the code into `index.html` and `script.js`.
+2. Open `index.html` directly in any modern web browser.
+3. **No server, dependencies, or build process is required!**
 
 ### Development Notes
 
-The core logic relies on fetching accurate time data (including current Unix time, raw offset, and DST offset) from the World Time API upon selection change. The continuous, real-time update is then managed locally using setInterval and calculated relative to the user's local system time to maintain high fidelity and minimize unnecessary API requests.
+The application uses `Intl.supportedValuesOf('timeZone')` to dynamically populate over 400 IANA time zones. By using the browser's internal time engine instead of a REST API, the app avoids "jumps" in time caused by network latency and provides a much smoother user experience. The state is synchronized with the browser's history API, allowing the back/forward buttons to navigate through your previous time zone selections.
+
+---

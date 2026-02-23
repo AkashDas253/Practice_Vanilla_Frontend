@@ -1,15 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-
-body {
-    font-family: 'Inter', sans-serif;
+.tabular { font-variant-numeric: tabular-nums; }
+select { appearance: none; -webkit-appearance: none; }
+@keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
 }
-
-.time-display {
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.05em;
-}
-
-@keyframes pulse-soft {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.85; }
-}s
+.animate-bounce-slow { animation: bounce-slow 3s infinite ease-in-out; }

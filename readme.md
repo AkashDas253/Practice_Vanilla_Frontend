@@ -1,5 +1,5 @@
 
-# Practice Vanilla Frontend
+# Practice Frontend
 
 ### Implementation
 - [Reusable Components](./reusables/)

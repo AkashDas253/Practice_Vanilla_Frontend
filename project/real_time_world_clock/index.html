@@ -5,25 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Time Zone Converter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = { darkMode: 'class' }
-    </script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300 flex items-center justify-center p-4">
-
     <div class="w-full max-w-4xl bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl p-6 md:p-10 border border-slate-200 dark:border-slate-800 relative">
-        
         <div class="flex flex-col sm:flex-row justify-between items-center mb-10 gap-4">
             <div class="text-center sm:text-left">
-                <h1 class="text-2xl md:text-3xl font-black tracking-tight text-indigo-600 dark:text-indigo-400 uppercase">
-                    Global Time Zone Converters
-                </h1>
-                <p class="text-xs font-bold opacity-50 uppercase tracking-widest">Global Synchronization</p>
+                <h1 class="text-2xl md:text-3xl font-black tracking-tight text-indigo-600 dark:text-indigo-400 uppercase">Global Time Zone Converter</h1>
+                <p class="text-xs font-bold opacity-50 uppercase tracking-widest">Precision Synchronization</p>
             </div>
             <div class="flex items-center gap-2">
-                <button id="shareBtn" class="flex items-center gap-2 px-4 py-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-xl font-bold text-sm hover:bg-indigo-100 transition-all border border-indigo-100 dark:border-indigo-800">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                <button id="shareBtn" class="flex items-center gap-2 px-4 py-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-xl font-bold text-sm hover:bg-indigo-100 border border-indigo-100 dark:border-indigo-800 transition-all">
+                    <span>🔗</span>
                     <span id="shareBtnText">Copy Link</span>
                 </button>
                 <button id="themeToggle" class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:scale-110 active:scale-95 transition-all">
@@ -31,44 +25,37 @@
                 </button>
             </div>
         </div>
-
         <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6 relative">
             <div class="w-full p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
                 <label class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Origin</label>
-                <select id="sourceZone" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 p-4 rounded-xl font-bold text-sm focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm cursor-pointer mb-6"></select>
+                <select id="sourceZone" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 p-4 rounded-xl font-bold text-sm outline-none mb-6 cursor-pointer"></select>
                 <div class="text-center">
                     <div id="sourceTime" class="text-4xl md:text-5xl font-black tabular tracking-tighter mb-1">00:00:00</div>
                     <div id="sourceDate" class="text-sm font-bold opacity-40 uppercase">---</div>
                 </div>
             </div>
-
-            <button id="swapBtn" class="bg-indigo-600 dark:bg-indigo-500 text-white shadow-xl p-4 rounded-full hover:scale-110 active:scale-90 transition-all z-10">
+            <button id="swapBtn" class="bg-indigo-600 dark:bg-indigo-500 text-white shadow-xl p-4 rounded-full hover:scale-110 active:scale-90 transition-all z-10 shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 block md:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden md:block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
             </button>
-
             <div class="w-full p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
                 <label class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Destination</label>
-                <select id="targetZone" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 p-4 rounded-xl font-bold text-sm focus:ring-2 focus:ring-emerald-500 outline-none shadow-sm cursor-pointer mb-6"></select>
+                <select id="targetZone" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 p-4 rounded-xl font-bold text-sm outline-none mb-6 cursor-pointer"></select>
                 <div class="text-center">
                     <div id="targetTime" class="text-4xl md:text-5xl font-black tabular tracking-tighter mb-1">00:00:00</div>
                     <div id="targetDate" class="text-sm font-bold opacity-40 mb-3 uppercase">---</div>
-                    <div class="flex flex-col items-center gap-3">
-                        <div id="diff" class="inline-block px-4 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 text-[10px] font-black uppercase tracking-tighter">---</div>
-                        
-                        <div id="foodBadge" class="flex items-center gap-3 px-4 py-2 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 rounded-2xl border border-orange-200 dark:border-orange-800/50">
-                            <span id="foodIcon" class="text-xl animate-bounce-slow">🍲</span>
-                            <div class="text-left">
-                                <p class="text-[9px] font-black uppercase opacity-60">Meal suggestion</p>
-                                <p id="foodText" class="text-xs font-bold leading-none">Scanning...</p>
-                            </div>
+                    <div id="diff" class="inline-block px-4 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 text-[10px] font-black uppercase tracking-tighter mb-4">---</div>
+                    <div class="flex items-center justify-center gap-3 px-4 py-3 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 rounded-2xl border border-orange-200 dark:border-orange-800/50">
+                        <span id="foodIcon" class="text-2xl animate-bounce-slow">🍲</span>
+                        <div class="text-left">
+                            <p id="greetingText" class="text-[10px] font-black uppercase opacity-60 leading-none">Scanning...</p>
+                            <p id="foodText" class="text-xs font-bold">Waiting for time...</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>

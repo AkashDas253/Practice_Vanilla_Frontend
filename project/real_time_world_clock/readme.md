@@ -18,10 +18,10 @@ Global Time Zone Converter is a lightweight, zero-dependency web application for
 ### Core Features
 
 1. **Dual Clock Interface:** Real-time 1-second interval updates for origin and destination zones.
-2. **Fractional Offset Support:** Accurately calculates differences for regions with non-hourly offsets (e.g., +5:30, +5:45).
-3. **Contextual Meal Engine:** Dynamic UI component that suggests current meal types (Breakfast, Lunch, Dinner) based on the destination's local 24-hour cycle.
+2. **Contextual Greeting & Meal Engine:** Dynamic UI component that provides time-appropriate greetings (Good Morning, etc.) and suggests meal types based on the destination's 24-hour cycle.
+3. **Fractional Offset Support:** Accurately calculates differences for regions with non-hourly offsets (e.g., +5:30, +5:45).
 4. **Responsive Swap Logic:** Adaptive layout toggle that transitions between vertical (mobile) and horizontal (desktop) orientations via Tailwind utility classes.
-5. **Dark Mode:** System-aware theme toggle with persistent user preference memory.
+5. **Dark Mode:** System-aware theme toggle with persistent user preference memory and vibrant emoji integration.
 
 ---
 
@@ -57,8 +57,8 @@ Open `index.html` in any modern web browser. No build process, server, or packag
 ### File Logic Summary
 
 * **`init()`**: Populates dropdowns and restores state from URL/Storage.
-* **`update()`**: Re-renders time strings and meal suggestions every 1000ms.
+* **`update()`**: Re-renders time strings, greetings, and meal suggestions every 1000ms.
 * **`getOffset()`**: Resilient regex-based offset extraction from localized strings.
-* **`getMeal()`**: Maps the 24-hour integer to specific daily meal windows.
+* **`getContext()`**: Maps the 24-hour integer to specific daily meal windows, greetings, and relevant emojis.
 
 ---
